@@ -1,0 +1,12 @@
+define reload
+kill
+load
+end
+
+define go
+reload
+run
+end
+
+target extended localhost:3333
+monitor arm semihosting enable

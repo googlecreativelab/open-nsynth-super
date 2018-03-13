@@ -1,0 +1,375 @@
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:custom
+EELAYER 25 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 6
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Sheet
+S 2700 1900 1050 650 
+U 59FB78B9
+F0 "power" 60
+F1 "power.sch" 60
+F2 "5V" I L 2700 2000 39 
+F3 "3.3V_A" I R 3750 2000 39 
+F4 "3.3V_C" I R 3750 2100 39 
+F5 "3.3V_D" I R 3750 2200 39 
+$EndSheet
+$Sheet
+S 2700 3050 1050 700 
+U 59FB78B8
+F0 "audio" 60
+F1 "audio.sch" 60
+F2 "SDA" I R 3750 3150 39 
+F3 "SCL" I R 3750 3250 39 
+F4 "BCK" I R 3750 3450 39 
+F5 "DIN" I R 3750 3650 39 
+F6 "LRCL" I R 3750 3550 39 
+F7 "OUTL" O L 2700 3350 39 
+F8 "OUTR" O L 2700 3250 39 
+$EndSheet
+$Sheet
+S 3050 3950 700  700 
+U 59FB78B7
+F0 "mcu" 60
+F1 "mcu.sch" 60
+F2 "ICP_RST" I R 3750 4050 39 
+F3 "ICP_IO" I R 3750 4150 39 
+F4 "ICP_CLK" I R 3750 4250 39 
+F5 "SCL" I L 3050 4150 39 
+F6 "SDA" I L 3050 4050 39 
+$EndSheet
+$Sheet
+S 7450 4650 700  700 
+U 59FF0043
+F0 "midi" 60
+F1 "midi.sch" 60
+F2 "MIDI_IN" O L 7450 4750 39 
+F3 "MIDI_5" I R 8150 4850 39 
+F4 "MIDI_4" I R 8150 4750 39 
+$EndSheet
+$Comp
+L Raspberry_Pi_2_3 J1
+U 1 1 59FBFF04
+P 5800 3950
+F 0 "J1" H 6500 2700 50  0000 C CNN
+F 1 "Raspberry_Pi_2_3" H 5400 4850 50  0000 C CNN
+F 2 "open-nsynth-super:RPi" H 6800 5200 50  0001 C CNN
+F 3 "" H 5850 3800 50  0001 C CNN
+	1    5800 3950
+	1    0    0    -1  
+$EndComp
+Text Label 6800 3050 0    39   ~ 0
+SDA
+Text Label 6800 3150 0    39   ~ 0
+SCL
+Text Label 3850 3150 0    39   ~ 0
+SDA
+Text Label 3850 3250 0    39   ~ 0
+SCL
+NoConn ~ 5600 5250
+NoConn ~ 5700 5250
+NoConn ~ 5800 5250
+NoConn ~ 5900 5250
+NoConn ~ 6000 5250
+NoConn ~ 6100 5250
+NoConn ~ 4900 3250
+NoConn ~ 4900 3350
+NoConn ~ 4900 3650
+NoConn ~ 4900 3850
+NoConn ~ 4900 4250
+NoConn ~ 4900 4350
+NoConn ~ 4900 4650
+NoConn ~ 4900 4750
+NoConn ~ 6700 3450
+NoConn ~ 6700 3550
+NoConn ~ 6700 3750
+NoConn ~ 6700 3850
+NoConn ~ 6700 3950
+NoConn ~ 6700 4050
+NoConn ~ 6700 4150
+NoConn ~ 6700 4350
+NoConn ~ 6700 4450
+NoConn ~ 5900 2650
+NoConn ~ 6000 2650
+Text GLabel 5600 2450 1    39   Input ~ 0
+5V
+$Comp
+L Audio-Jack-3 J9
+U 1 1 59FC78FC
+P 1800 3350
+F 0 "J9" H 1750 3525 50  0000 C CNN
+F 1 "Audio-Jack-3" H 1900 3280 50  0000 C CNN
+F 2 "open-nsynth-super:KLBR_4" H 2050 3450 50  0001 C CNN
+F 3 "" H 2050 3450 50  0001 C CNN
+	1    1800 3350
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR01
+U 1 1 59FC8004
+P 1600 3550
+F 0 "#PWR01" H 1600 3300 50  0001 C CNN
+F 1 "GND" H 1600 3400 50  0000 C CNN
+F 2 "" H 1600 3550 50  0001 C CNN
+F 3 "" H 1600 3550 50  0001 C CNN
+	1    1600 3550
+	1    0    0    -1  
+$EndComp
+Text Label 2950 4050 2    39   ~ 0
+SDA
+Text Label 2950 4150 2    39   ~ 0
+SCL
+Text GLabel 2350 1950 1    39   Input ~ 0
+5V
+$Comp
+L PWR_FLAG #FLG02
+U 1 1 59FDD974
+P 5500 2550
+F 0 "#FLG02" H 5500 2625 50  0001 C CNN
+F 1 "PWR_FLAG" H 5500 2700 50  0000 C CNN
+F 2 "" H 5500 2550 50  0001 C CNN
+F 3 "" H 5500 2550 50  0001 C CNN
+	1    5500 2550
+	0    -1   -1   0   
+$EndComp
+$Comp
+L PWR_FLAG #FLG03
+U 1 1 59FDE24B
+P 5300 5350
+F 0 "#FLG03" H 5300 5425 50  0001 C CNN
+F 1 "PWR_FLAG" H 5300 5500 50  0000 C CNN
+F 2 "" H 5300 5350 50  0001 C CNN
+F 3 "" H 5300 5350 50  0001 C CNN
+	1    5300 5350
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	4900 3450 3750 3450
+Wire Wire Line
+	4900 3550 3750 3550
+Wire Wire Line
+	4900 3750 4350 3750
+Wire Wire Line
+	4350 3750 4350 3650
+Wire Wire Line
+	4350 3650 3750 3650
+Wire Wire Line
+	6800 3050 6700 3050
+Wire Wire Line
+	6800 3150 6700 3150
+Wire Wire Line
+	3850 3150 3750 3150
+Wire Wire Line
+	3850 3250 3750 3250
+Wire Wire Line
+	5600 2650 5600 2450
+Wire Wire Line
+	2000 3250 2700 3250
+Wire Wire Line
+	2000 3350 2700 3350
+Wire Wire Line
+	1600 3450 1600 3550
+Wire Wire Line
+	4900 3950 4350 3950
+Wire Wire Line
+	4350 3950 4350 4050
+Wire Wire Line
+	4350 4050 3750 4050
+Wire Wire Line
+	4900 4050 4400 4050
+Wire Wire Line
+	4400 4050 4400 4150
+Wire Wire Line
+	4400 4150 3750 4150
+Wire Wire Line
+	4900 4150 4450 4150
+Wire Wire Line
+	4450 4150 4450 4250
+Wire Wire Line
+	4450 4250 3750 4250
+Wire Wire Line
+	3050 4050 2950 4050
+Wire Wire Line
+	3050 4150 2950 4150
+Wire Wire Line
+	2100 2000 2700 2000
+Wire Wire Line
+	5500 2550 5700 2550
+Connection ~ 5600 2550
+$Comp
+L GND #PWR04
+U 1 1 59FDE6DC
+P 5400 5450
+F 0 "#PWR04" H 5400 5200 50  0001 C CNN
+F 1 "GND" H 5400 5300 50  0000 C CNN
+F 2 "" H 5400 5450 50  0001 C CNN
+F 3 "" H 5400 5450 50  0001 C CNN
+	1    5400 5450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5400 5250 5400 5450
+Wire Wire Line
+	5300 5350 5500 5350
+Connection ~ 5400 5350
+Wire Wire Line
+	5500 5350 5500 5250
+Wire Wire Line
+	5700 2550 5700 2650
+Text GLabel 3850 2000 2    39   Input ~ 0
+3.3V_A
+Text GLabel 3850 2100 2    39   Input ~ 0
+3.3V_C
+Text GLabel 3850 2200 2    39   Input ~ 0
+3.3V_D
+Wire Wire Line
+	3750 2000 3850 2000
+Wire Wire Line
+	3750 2100 3850 2100
+Wire Wire Line
+	3750 2200 3850 2200
+Wire Wire Line
+	6700 4750 7450 4750
+$Comp
+L DIN-5_180degree J2
+U 1 1 5A008393
+P 8850 4850
+F 0 "J2" H 8975 5075 50  0000 C CNN
+F 1 "DIN-5_180degree" H 8850 4600 50  0000 C CNN
+F 2 "open-nsynth-super:MIDI" H 8850 4850 50  0001 C CNN
+F 3 "" H 8850 4850 50  0001 C CNN
+	1    8850 4850
+	1    0    0    -1  
+$EndComp
+NoConn ~ 8550 4850
+NoConn ~ 9150 4850
+NoConn ~ 8850 4550
+Wire Wire Line
+	8550 4750 8150 4750
+Wire Wire Line
+	8150 4850 8400 4850
+Wire Wire Line
+	8400 4850 8400 5350
+Wire Wire Line
+	8400 5350 9250 5350
+Wire Wire Line
+	9250 5350 9250 4750
+Wire Wire Line
+	9250 4750 9150 4750
+$Comp
+L CONN_01X08 J3
+U 1 1 5A009008
+P 8900 3400
+F 0 "J3" H 8900 3850 50  0000 C CNN
+F 1 "OLED13" V 9000 3400 50  0000 C CNN
+F 2 "open-nsynth-super:oled13" H 8900 3400 50  0001 C CNN
+F 3 "" H 8900 3400 50  0001 C CNN
+	1    8900 3400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8700 3050 8600 3050
+Wire Wire Line
+	8700 3150 8600 3150
+Wire Wire Line
+	8700 3650 8600 3650
+Wire Wire Line
+	8700 3750 8600 3750
+NoConn ~ 8700 3250
+NoConn ~ 8700 3350
+NoConn ~ 8700 3550
+Text Label 8600 3750 2    39   ~ 0
+SDA
+Text Label 8600 3650 2    39   ~ 0
+SCL
+$Comp
+L GND #PWR05
+U 1 1 5A0097B4
+P 8600 3050
+F 0 "#PWR05" H 8600 2800 50  0001 C CNN
+F 1 "GND" H 8600 2900 50  0000 C CNN
+F 2 "" H 8600 3050 50  0001 C CNN
+F 3 "" H 8600 3050 50  0001 C CNN
+	1    8600 3050
+	-1   0    0    1   
+$EndComp
+Text GLabel 8600 3150 0    39   Input ~ 0
+3.3V_D
+$Comp
+L USB_OTG J4
+U 1 1 5A00A311
+P 1800 2200
+F 0 "J4" H 1600 2650 50  0000 L CNN
+F 1 "USB_OTG" H 1600 2550 50  0000 L CNN
+F 2 "Connectors:USB_Micro-B" H 1950 2150 50  0001 C CNN
+F 3 "" H 1950 2150 50  0001 C CNN
+	1    1800 2200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2350 2000 2350 1950
+Connection ~ 2350 2000
+NoConn ~ 2100 2200
+NoConn ~ 2100 2300
+NoConn ~ 2100 2400
+NoConn ~ 1700 2600
+$Comp
+L GND #PWR06
+U 1 1 5A00ADDF
+P 1800 2700
+F 0 "#PWR06" H 1800 2450 50  0001 C CNN
+F 1 "GND" H 1800 2550 50  0000 C CNN
+F 2 "" H 1800 2700 50  0001 C CNN
+F 3 "" H 1800 2700 50  0001 C CNN
+	1    1800 2700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1800 2600 1800 2700
+NoConn ~ 6700 4650
+Wire Wire Line
+	8700 3450 7650 3450
+Wire Wire Line
+	7650 3450 7650 3250
+Wire Wire Line
+	7650 3250 6700 3250
+$EndSCHEMATC
