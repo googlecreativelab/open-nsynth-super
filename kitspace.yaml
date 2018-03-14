@@ -1,0 +1,4 @@
+site: https://nsynthsuper.withgoogle.com/
+color: black
+bom: pcb_hardware/projects/open-nsynth-super/1-click-bom.tsv
+gerbers: pcb_hardware/render/
