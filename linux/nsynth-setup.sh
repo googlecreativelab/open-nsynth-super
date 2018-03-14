@@ -56,7 +56,7 @@ setup_serial() {
     if ! grep -q '^dtoverlay=pi3-miniuart-bt' /boot/config.txt
     then
         echo 'Enabling serial MIDI'
-        printf "\n# Enable seiral MIDI\nenable_uart=1\ndtoverlay=pi3-miniuart-bt\ndtoverlay=midi-uart0\n" >> /boot/config.txt
+        printf "\n# Enable serial MIDI\nenable_uart=1\ndtoverlay=pi3-miniuart-bt\ndtoverlay=midi-uart0\n" >> /boot/config.txt
     fi
 }
 
