@@ -1,0 +1,49 @@
+{
+    "debug": false,
+    "nsynth": {
+        "dataDirectory": "/home/pi/pads",
+        "resolution": 9,
+        "pitches": [24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 84],
+        "length": 60000,
+        "sampleRate": 16000
+    },
+    "corners": [
+        {
+            "instruments": [
+                {"name": "cleanbass", "display": "CLN BASS", "abbr": "CB"},
+                {"name": "synthbass", "display": "SYN BASS", "abbr": "SB"}
+            ]
+        },
+        {
+            "instruments": [
+                {"name": "electricpiano", "display": "E. PIANO", "abbr": "EP"},
+                {"name": "flute", "display": "FLUTE", "abbr": "FL"}
+            ]
+        },
+        {
+            "instruments": [
+                {"name": "marimba", "display": "MARIMBA", "abbr": "MA"},
+                {"name": "electrotom", "display": "EL. TOM", "abbr": "ET"}
+            ]
+        },
+        {
+            "instruments": [
+                {"name": "distortedguitar", "display": "DIST. GTR", "abbr": "DG"},
+                {"name": "susvox", "display": "SUS. VOX", "abbr": "SV"}
+            ]
+        }
+    ],
+    "audio": {
+        "sampleRate": 48000,
+        "bufferSize": 128
+    },
+    "midi": {
+        "device": "/dev/ttyAMA0",
+        "channel": 1
+    },
+    "osc": {
+        "in": {
+            "portNumber": 8000
+        }
+    }
+}

@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name open-nsynth-super)(type KiCad)(uri "$(KIPRJMOD)")(options "")(descr ""))
+)
