@@ -128,7 +128,7 @@ Alternatively, you can use the ``dd`` command natively on *NIX systems:
 $ sudo dd if=<IMAGE NAME> of=<DISK NAME>
 ```
 
- Connect a keyboard and screen to the Raspberry Pi, insert the SD card, and plug a USB power cable into the socket on the Open NSynth Super mainboard. You should see the Pi booting up on the connected display; when you receive a prompt, you can login with the default username and password: pi / raspberry. Note that the device might run a file system check when you first boot up from the new card – this will take about 5 minutes depending on the size of the disk.
+ Connect a keyboard and screen to the Raspberry Pi, insert the SD card, and plug a USB power cable into the socket on the Open NSynth Super mainboard. You should see the Pi booting up on the connected display; when you receive a prompt, you can login with the default username and password: pi / raspberry. **Note that the device might run a file system check when you first boot up from the new card – this will take about 5 minutes depending on the size of the disk.**
 
 ### 4. Install the firmware
 

@@ -6,6 +6,16 @@ This folder contains all of the source files for making your own Open NSynth Sup
 
 The PCB design includes a mix of SMT and through-hole components. It is possible to assemble individual boards by hand in a few hours, however for multiple boards it would be advisable to order multiple fully assembled (or at least SMT assembled) PCBs. If you wish to have the PCB manufactured, the files in `render/` should be all you need; additionally, a bill of materials is [available here](https://storage.googleapis.com/open-nsynth-super/onss_bom.xlsx).
 
+For reference, development PCBs were fabricated at the following specification:
+
+- 160mm x 160mm board
+- 1.6mm thickness
+- 1oz copper
+- 2 layers
+- Silkscreen both sides
+- Smallest drill (for vias) 0.4mm
+- Smallest router 0.8mm
+
 # PCB overview
 
 ![Top and bottom sides of Open NSynth Super PCB](../images/ons_pcb_overview.jpg)
@@ -95,3 +105,5 @@ Now, apply a small amount of solder on the tip of the iron, and then, while hold
 After soldering the potentiometers and rotary encoders, the pins highlighted below (SW3, RV5, RV4) should be trimmed, to avoid contact with the Raspberry Pi. Optionally, they can also be covered with an insulant material such as electrical tape.
 
 ![Finishing the board by clipping excess solder and mounts](../images/ons_pcb_finishing.jpg)
+
+In order to preserve performance of the touch panel, you can add a layer of adhesive plastic to the surface of the board to insulate from moisture (depending on the thickness of the plastic you may wish to adjust the sensitivity of the touch sensor; however the default settings should work for a thin sheet of adhesive plastic.)
