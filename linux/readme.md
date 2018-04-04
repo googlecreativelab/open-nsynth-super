@@ -6,7 +6,7 @@ As part of the process of setting up a new system, you will also have to install
 
 You will need:
 
-- A Raspberry Pi 3
+- A Raspberry Pi 3 ***Note that the new Raspberry Pi 3B+ is not yet tested with these instructions***
 - An assembled Open NSynth Super mainboard PCB
 - An SD card with at least 8GB capacity
 - A wireless or wired network connection

@@ -57,11 +57,11 @@ The physical interface of Open NSynth Super is constructed around a square touch
 
 ![Open NSynth Super system diagram](images/ons_main_overview.jpg)
 
-There are several distinct components to each Open NSynth Super unit: a custom PCB with a dedicated microcontroller and firmware for handling user inputs; a Raspberry Pi computer running Raspbian Linux and an openFrameworks-based audio synthesiser application; and a series of scripts for preparing audio on a GPU-equipped Linux server using the NSynth algorithm. In addition to the software, firmware, and hardware, there are files for creating a casing and dials for the unit.
+There are several distinct components to each Open NSynth Super unit: a custom PCB with a dedicated microcontroller and firmware for handling user inputs; a Raspberry Pi 3 computer running Raspbian Linux and an openFrameworks-based audio synthesiser application; and a series of scripts for preparing audio on a GPU-equipped Linux server using the NSynth algorithm. In addition to the software, firmware, and hardware, there are files for creating a casing and dials for the unit.
 
 ##### Hardware & firmware
 
-The electronics are built around a Raspberry Pi 3 running Raspbian Linux, and a custom PCB used to read the inputs and control the outputs. A microcontroller on the PCB manages the physical inputs: there are four rotary encoders on the four corners for instrument selection; six potentiometers below the interface to control the position, envelope, and volume settings; and a capacitive grid on the surface of the PCB (exposed through the top layer of the case) used to select the mixing point of the four instruments. 
+The electronics are built around a Raspberry Pi 3 running Raspbian Linux (note that the new Raspberry Pi 3B+ is not yet tested with these instructions), and a custom PCB used to read the inputs and control the outputs. A microcontroller on the PCB manages the physical inputs: there are four rotary encoders on the four corners for instrument selection; six potentiometers below the interface to control the position, envelope, and volume settings; and a capacitive grid on the surface of the PCB (exposed through the top layer of the case) used to select the mixing point of the four instruments. 
 
 More information on the electronics, hardware, and firmware can be found [here](/pcb_hardware), and [here](/firmware). A complete bill of materials for the case and electronics is available in this Excel [spreadsheet](https://storage.googleapis.com/open-nsynth-super/onss_bom.xlsx).
 
@@ -90,7 +90,7 @@ The example image file includes the following software features:
 You will need the following off-the-shelf items to complete this guide:
 
 - Micro SD card (16GB or 64GB)
-- Raspberry Pi 3
+- Raspberry Pi 3 ***Note that the new 3B+ Raspberry Pi is not yet tested with these instructions***
 - 5V 2A micro-USB power supply
 
 You will also need the following Open NSynth Super-specific items, which are detailed in the steps below:
