@@ -1,3 +1,4 @@
+// Socket implementation adapted from: https://www.geeksforgeeks.org/socket-programming-cc/
 #include <stdio.h>
 #include <sys/socket.h>
 #include <stdlib.h>
