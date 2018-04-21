@@ -98,6 +98,7 @@ void ofApp::setupSound(){
 	auto config = settings["audio"];
 	auto devices = ofSoundStreamListDevices();
 	sampleRate = settings["audio"]["sampleRate"];
+	std::cout << "Sample rate: " << sampleRate << std::endl;
 #if OF_VERSION_MINOR < 10
 	if(config.find("deviceId") != config.end()){
 		soundStream.setDevice(devices[config["deviceId"]]);
