@@ -100,7 +100,7 @@ setup_app() {
       mkdir /home/pi/opt/of/apps/open-nsynth && cp -r /home/pi/open-nsynth-super/app/open-nsynth /home/pi/opt/of/apps/open-nsynth/
     fi
     echo "Compiling open-nsynth app"
-    cd /home/pi/open-nsynth-super/app/open-nsynth/open-nsynth
+    cd /home/pi/opt/of/apps/open-nsynth/open-nsynth
     make -j4
 }
 
@@ -128,20 +128,22 @@ EOF
 }
 
 setup_openocd() {
-    if ! [ -e /usr/bin/openocd ]
+    if ! [ -e /home/pi/open-nsynth-super/firmware/openocd/bin/openocd ]
     then
         echo "Installing OpenOCD"
-        mkdir -p /home/pi/tmp/setup
-        (
-            cd /home/pi/tmp/setup
-            git clone git://git.code.sf.net/p/openocd/code openocd
-            cd openocd
-            git checkout v0.10.0
-            ./bootstrap
-            ./configure --prefix=/usr --enable-sysfsgpio --enable-bcm2835gpio
-            make -j4
-            sudo make install
-        )
+        cd /home/pi/open-nsynth-super-master/firmware/utils && sudo ./install_dependencies.sh
+        cd .. && make install
+        # mkdir -p /home/pi/tmp/setup
+        # (
+        #     cd /home/pi/tmp/setup
+        #     git clone git://git.code.sf.net/p/openocd/code openocd
+        #     cd openocd
+        #     git checkout v0.10.0
+        #     ./bootstrap
+        #     ./configure --prefix=/usr --enable-sysfsgpio --enable-bcm2835gpio
+        #     make -j4
+        #     sudo make install
+        # )
     fi
 }
 
