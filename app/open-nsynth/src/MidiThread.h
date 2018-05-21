@@ -21,7 +21,7 @@ limitations under the License.
 // Listens to MIDI data on a serial port.
 class MidiThread : public ofThread{
 	public:
-		MidiThread(Poco::FastMutex &synthMutex, NSynth &synth);
+		MidiThread(std::mutex &synthMutex, NSynth &synth);
 		// Opens the serial device, to be called before startThread().
 		bool setup(const std::string &device, int channel);
 		// The thread execution method.
@@ -29,7 +29,7 @@ class MidiThread : public ofThread{
 
 	private:
 		// A guard for the synth instance.
-		Poco::FastMutex &synthMutex;
+		std::mutex &synthMutex;
 		// The synth instance to send note events to.
 		NSynth &synth;
 		// The opened serial port.

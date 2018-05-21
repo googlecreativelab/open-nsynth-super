@@ -65,10 +65,10 @@ install_deps() {
     apt-get update
     apt-get install -y i2c-tools python-smbus gdb-arm-none-eabi gcc-arm-none-eabi \
         git autoconf libtool make pkg-config build-essential \
-        libcairo-dev gstreamer0.10-dev gstreamer0.10-x \
-        gstreamer0.10-plugins-base-apps gstreamer0.10-alsa \
+        libcairo-dev gstreamer1.0-dev gstreamer1.0-x \
+        gstreamer1.0-plugins-base-apps gstreamer1.0-alsa \
         libudev-dev libsndfile-dev libopenal-dev libssl-dev \
-        gstreamer0.10-plugins-good gstreamer0.10-plugins-bad \
+        gstreamer1.0-plugins-good gstreamer1.0-plugins-bad \
         gstreamer-plugins-base0.10-dev freeglut3-dev libasound2-dev \
         libxmu-dev libxxf86vm-dev libgl1-mesa-dev libglu1-mesa-dev \
         libraw1394-dev libudev-dev libdrm-dev libglew-dev libopenal-dev \
@@ -78,6 +78,31 @@ install_deps() {
         librtaudio-dev libboost-filesystem-dev
 }
 
+
+setup_openframeworks() {
+    if ! [ -e /home/pi/opt/of ]
+    then
+        echo "Fetching openFrameworks"
+        mkdir -p /home/pi/opt
+        (
+            cd /home/pi/opt
+            git clone --depth=1 https://github.com/openframeworks/openFrameworks.git
+            mv openFrameworks of
+            sudo of/scripts/linux/debian/install_dependencies.sh
+            sudo of/scripts/linux && download_libs.sh
+        )
+    fi
+}
+setup_app() {
+    if ! [ -e /home/pi/opt/of/apps/open-nsynth ]
+    then
+      echo "Copy open-nsynth app"
+      mkdir /home/pi/opt/of/apps/open-nsynth && cp -r /home/pi/open-nsynth-super/app/open-nsynth /home/pi/opt/of/apps/open-nsynth/
+    fi
+    echo "Compiling open-nsynth app"
+    cd /home/pi/open-nsynth-super/app/open-nsynth/open-nsynth
+    make -j4
+}
 
 setup_service() {
     svc=/etc/systemd/system/open-nsynth.service
@@ -101,22 +126,6 @@ EOF
         systemctl enable open-nsynth
     fi
 }
-
-
-setup_openframeworks() {
-    if ! [ -e /home/pi/opt/of ]
-    then
-        echo "Fetching openFrameworks"
-        mkdir -p /home/pi/opt
-        (
-            cd /home/pi/opt
-            curl http://openframeworks.cc/versions/v0.9.8/of_v0.9.8_linuxarmv6l_release.tar.gz | tar -xzf -
-            mv of_v0.9.8_linuxarmv6l_release of
-            #sudo of/scripts/linux/debian/install_dependencies.sh
-        )
-    fi
-}
-
 
 setup_openocd() {
     if ! [ -e /usr/bin/openocd ]

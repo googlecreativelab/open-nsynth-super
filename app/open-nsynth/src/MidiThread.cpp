@@ -22,7 +22,7 @@ limitations under the License.
 #include <unistd.h>
 
 
-MidiThread::MidiThread(Poco::FastMutex &synthMutex, NSynth &synth)
+MidiThread::MidiThread(std::mutex &synthMutex, NSynth &synth)
 	: ofThread(), synthMutex(synthMutex), synth(synth){
 }
 
