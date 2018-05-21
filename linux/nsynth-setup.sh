@@ -92,6 +92,11 @@ setup_openframeworks() {
             sudo of/scripts/linux && download_libs.sh
         )
     fi
+    if ! [ -e /home/pi/opt/of/addons/ofxMidi ]
+    then
+      echo "Fetching ofxMidi"
+      cd /home/pi/opt/of/addons && git clone https://github.com/gllmar/ofxMidi/
+    fi
 }
 setup_app() {
     if ! [ -e /home/pi/opt/of/apps/open-nsynth ]

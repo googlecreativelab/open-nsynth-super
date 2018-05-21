@@ -4,8 +4,10 @@
 - get git `sudo apt update && sudo apt install git`
 - clone this repository `git clone https://github.com/nanu-c/open-nsynth-super.git`
 - get en.stm32cubef0.zip from http://www.st.com/en/embedded-software/stm32cubef0.html and put in `/home/pi/open-nsynth-super/firmware/`
-- run `sudo linux/nsynth-setup.sh`
+- run `sudo sh /home/pi/open-nsynth-super/linux/nsynth-setup.sh`
+- when you get this error `virtual memory exhausted: Cannot allocate memory` run this command `cd /home/pi/opt/of/apps/open-nsynth/open-nsynth&&make -j3`
 - copy audio files as here https://github.com/googlecreativelab/open-nsynth-super/tree/master/linux#4-copy-audio-files
+- this release also accepts a usb-midi device
 
 # Open NSynth Super
 
