@@ -89,13 +89,13 @@ setup_openframeworks() {
             git clone --depth=1 https://github.com/openframeworks/openFrameworks.git
             mv openFrameworks of
             sudo of/scripts/linux/debian/install_dependencies.sh
-            sudo of/scripts/linux && download_libs.sh
+            sudo of/scripts/linux/download_libs.sh
         )
     fi
     if ! [ -e /home/pi/opt/of/addons/ofxMidi ]
     then
       echo "Fetching ofxMidi"
-      cd /home/pi/opt/of/addons && git clone https://github.com/gllmar/ofxMidi/
+      cd /home/pi/opt/of/addons && git clone https://github.com/npisanti/ofxMidi/
     fi
 }
 setup_app() {
@@ -136,8 +136,8 @@ setup_openocd() {
     if ! [ -e /home/pi/open-nsynth-super/firmware/openocd/bin/openocd ]
     then
         echo "Installing OpenOCD"
-        cd /home/pi/open-nsynth-super-master/firmware/utils && sudo ./install_dependencies.sh
-        cd .. && make install
+        cd /home/pi/open-nsynth-super/firmware/utils && sudo ./install_dependencies.sh
+        cd ../src && make install
         # mkdir -p /home/pi/tmp/setup
         # (
         #     cd /home/pi/tmp/setup
@@ -164,4 +164,5 @@ else
     sudo bash $0
     setup_openframeworks
     setup_openocd
+    setup_app
 fi
