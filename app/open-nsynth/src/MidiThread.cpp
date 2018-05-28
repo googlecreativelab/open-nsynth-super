@@ -11,6 +11,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// Modified 2018 by J. Ditterich for Note On messages with zero velocity
+// and running status being interpreted correctly
+
 #include "ofLog.h"
 
 #include "MidiThread.h"
@@ -21,8 +24,17 @@ limitations under the License.
 #include <termios.h>
 #include <unistd.h>
 
+// States for state machine
+#define WAIT_FOR_STATUS 1
+#define NOTE_ON_WAIT_FOR_NOTE 2
+#define NOTE_ON_WAIT_FOR_VEL 3
+#define NOTE_OFF_WAIT_FOR_NOTE 4
+#define NOTE_OFF_WAIT_FOR_VEL 5
+#define RUNNING_NOTE_ON_WAIT_FOR_VEL 6
+#define RUNNING_NOTE_OFF_WAIT_FOR_VEL 7
 
-MidiThread::MidiThread(std::mutex &synthMutex, NSynth &synth)
+
+MidiThread::MidiThread(Poco::FastMutex &synthMutex, NSynth &synth)
 	: ofThread(), synthMutex(synthMutex), synth(synth){
 }
 
@@ -89,75 +101,126 @@ void MidiThread::threadedFunction(){
 		return result;
 	};
 
-	uint8_t header = read1();
+	uint8_t state = WAIT_FOR_STATUS;
+	uint8_t running_status = 0;
+	uint8_t header = 0;
+	uint8_t note = 0;
+	uint8_t velocity = 0;
+
+	uint8_t midi_byte = read1();
+
 	while(isThreadRunning()){
-		if((header & 0xf0) == 0x90){
-			// Note on - this is a 3 byte message.
-			uint8_t note = read1();
-			if(!isThreadRunning()){
-				break;
-			}
-			if(note & 0x80){
-				// The note is badly formed, discard the current header
-				// and continue;
-				header = note;
-				break;
-			}
+		switch (state) {
+			case WAIT_FOR_STATUS:
+				if (midi_byte < 0x80) { // unexpected data byte received
+					if (running_status >= 0x90) { // We are still in Note On running status...
+						note = midi_byte;
+						state = RUNNING_NOTE_ON_WAIT_FOR_VEL;
+					} else if (running_status) { // We are still in Note Off running status...
+						note = midi_byte;
+						state = RUNNING_NOTE_OFF_WAIT_FOR_VEL;
+					}
+				} else if ((midi_byte & 0xf0) == 0x90) { // Note On received
+					header = midi_byte;
+					state = NOTE_ON_WAIT_FOR_NOTE;
+					running_status = header;
+				} else if ((midi_byte & 0xf0) == 0x80) { // Note Off received
+					header = midi_byte;
+					state = NOTE_OFF_WAIT_FOR_NOTE;
+					running_status = header;
+				} else if ((midi_byte >= 0xa0) && (midi_byte <= 0xf7)) { // other Voice Category or System Common Category status received
+					running_status = 0;
+				} // RealTime Category messages are ignored and have no effect on state or running status
 
-			uint8_t velocity = read1();
-			if(!isThreadRunning()){
 				break;
-			}
-			if(velocity & 0x80){
-				// The note is badly formed, discard the current header
-				// and continue;
-				header = note;
-				break;
-			}
 
-			if((header & 0x0f) == channel){
-				synthMutex.lock();
-				synth.on(note, static_cast<float>(velocity) / 127.0f);
-				synthMutex.unlock();
-			}
+			case NOTE_ON_WAIT_FOR_NOTE:
+				if (midi_byte < 0x80) { // data byte, as expected
+					note = midi_byte;
+					state = NOTE_ON_WAIT_FOR_VEL;
+				} // everything else should be a RealTime Category message and has no effect on state or running status
 
-			// Start on the next message.
-			header = read1();
-		}else if((header & 0xf0) == 0x80){
-			// Note off - this is a 3 byte message.
-			uint8_t note = read1();
-			if(!isThreadRunning()){
 				break;
-			}
-			if(note & 0x80){
-				// The note is badly formed, discard the current header
-				// and continue;
-				header = note;
-				break;
-			}
 
-			uint8_t velocity = read1();
-			if(!isThreadRunning()){
-				break;
-			}
-			if(velocity & 0x80){
-				// The note is badly formed, discard the current header
-				// and continue;
-				header = note;
-				break;
-			}
+			case NOTE_ON_WAIT_FOR_VEL:
+				if (midi_byte < 0x80) { // date byte, as expected
+					velocity = midi_byte;
+					state = WAIT_FOR_STATUS;
 
-			if((header & 0x0f) == channel){
-				synthMutex.lock();
-				synth.off(note);
-				synthMutex.unlock();
-			}
+					if (velocity) { // This is a real Note On message
+						if ((header & 0x0f) == channel) {
+							synthMutex.lock();
+							synth.on(note, static_cast<float>(velocity) / 127.0f);
+							synthMutex.unlock();
+						}
+					} else { // A velocity of zero has to be interpreted as Note Off...
+						if((header & 0x0f) == channel){
+							synthMutex.lock();
+							synth.off(note);
+							synthMutex.unlock();
+						}
+					}
+				} // everything else should be a RealTime Category message and has no effect on state or running status
 
-			// Start on the next message.
-			header = read1();
-		}else{
-			// Discard the header as it is not understood.
-			header = read1();
+				break;
+
+			case NOTE_OFF_WAIT_FOR_NOTE:
+				if (midi_byte < 0x80) { // data byte, as expected
+					note = midi_byte;
+					state = NOTE_OFF_WAIT_FOR_VEL;
+				} // everything else should be a RealTime Category message and has no effect on state or running status
+
+				break;
+
+			case NOTE_OFF_WAIT_FOR_VEL:
+				if (midi_byte < 0x80) { // date byte, as expected
+					state = WAIT_FOR_STATUS;
+
+					if((header & 0x0f) == channel){
+						synthMutex.lock();
+						synth.off(note);
+						synthMutex.unlock();
+					}
+				} // everything else should be a RealTime Category message and has no effect on state or running status
+
+				break;
+
+			case RUNNING_NOTE_ON_WAIT_FOR_VEL:
+				if (midi_byte < 0x80) { // date byte, as expected
+					velocity = midi_byte;
+					state = WAIT_FOR_STATUS;
+
+					if (velocity) { // This is a real Note On message
+						if ((running_status & 0x0f) == channel) {
+							synthMutex.lock();
+							synth.on(note, static_cast<float>(velocity) / 127.0f);
+							synthMutex.unlock();
+						}
+					} else { // A velocity of zero has to be interpreted as Note Off...
+						if((running_status & 0x0f) == channel){
+							synthMutex.lock();
+							synth.off(note);
+							synthMutex.unlock();
+						}
+					}
+				} // everything else should be a RealTime Category message and has no effect on state or running status
+
+				break;
+
+			case RUNNING_NOTE_OFF_WAIT_FOR_VEL:
+				if (midi_byte < 0x80) { // date byte, as expected
+					state = WAIT_FOR_STATUS;
+
+					if((running_status & 0x0f) == channel){
+						synthMutex.lock();
+						synth.off(note);
+						synthMutex.unlock();
+					}
+				} // everything else should be a RealTime Category message and has no effect on state or running status
+
+				break;
 		}
+
+		midi_byte = read1(); // read next byte
 	}
 }
