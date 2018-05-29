@@ -30,9 +30,10 @@ limitations under the License.
 #include "PositionScreen.h"
 #include "VolumeScreen.h"
 #include "NSynth.h"
+#include "ofxMidi.h"
 
 
-class ofApp : public ofBaseApp{
+class ofApp : public ofBaseApp, public ofxMidiListener{
 	public:
 		ofApp();
 
@@ -70,6 +71,9 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo) override;
 		void gotMessage(ofMessage msg) override;
 		void audioOut(ofSoundBuffer& buffer) override;
+		void newMidiMessage(ofxMidiMessage& eventArgs);
+		ofxMidiIn midiIn;
+		ofxMidiMessage midiMessage;
 
 	private:
 		static constexpr int OLED_I2C_ADDR = 0x3d;
@@ -131,7 +135,7 @@ class ofApp : public ofBaseApp{
 		// The configured sound output.
 		ofSoundStream soundStream;
 		// A lock to guard multithreaded use of synth.
-		Poco::FastMutex synthMutex;
+		std::mutex synthMutex;
 		// The NSyth instance.
 		NSynth synth;
 		// True if NSyth has a valid pad loaded.

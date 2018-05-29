@@ -1,1 +1,3 @@
 ofxOsc
+ofxPoco
+ofxMidi

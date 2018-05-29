@@ -1,3 +1,14 @@
+# How to install on rpi 3 B + Model
+
+- Connect your rpi to network and ssh into it
+- get git `sudo apt update && sudo apt install git`
+- clone this repository `git clone https://github.com/nanu-c/open-nsynth-super.git`
+- get en.stm32cubef0.zip from http://www.st.com/en/embedded-software/stm32cubef0.html and put in `/home/pi/open-nsynth-super/firmware/`
+- run `sudo sh /home/pi/open-nsynth-super/linux/nsynth-setup.sh`
+- when you get this error `virtual memory exhausted: Cannot allocate memory` run this command `cd /home/pi/opt/of/apps/open-nsynth/open-nsynth&&make -j3`
+- copy audio files as here https://github.com/googlecreativelab/open-nsynth-super/tree/master/linux#4-copy-audio-files
+- this release also accepts a usb-midi device
+
 # Open NSynth Super
 
 ![Open NSynth Super with tools and designs](images/ons_main_hero.jpg)
@@ -61,7 +72,7 @@ There are several distinct components to each Open NSynth Super unit: a custom P
 
 ##### Hardware & firmware
 
-The electronics are built around a Raspberry Pi 3 running Raspbian Linux (note that the new Raspberry Pi 3B+ is not yet tested with these instructions), and a custom PCB used to read the inputs and control the outputs. A microcontroller on the PCB manages the physical inputs: there are four rotary encoders on the four corners for instrument selection; six potentiometers below the interface to control the position, envelope, and volume settings; and a capacitive grid on the surface of the PCB (exposed through the top layer of the case) used to select the mixing point of the four instruments. 
+The electronics are built around a Raspberry Pi 3 running Raspbian Linux (note that the new Raspberry Pi 3B+ is not yet tested with these instructions), and a custom PCB used to read the inputs and control the outputs. A microcontroller on the PCB manages the physical inputs: there are four rotary encoders on the four corners for instrument selection; six potentiometers below the interface to control the position, envelope, and volume settings; and a capacitive grid on the surface of the PCB (exposed through the top layer of the case) used to select the mixing point of the four instruments.
 
 More information on the electronics, hardware, and firmware can be found [here](/pcb_hardware), and [here](/firmware). A complete bill of materials for the case and electronics is available in this Excel [spreadsheet](https://storage.googleapis.com/open-nsynth-super/onss_bom.xlsx).
 
@@ -107,7 +118,7 @@ This repository contains a reference design for a laser-cut shell for Open NSynt
 You should make or order a case following the above guide before moving forward with the build. Don't assemble the case yet, as you will need access to the ports on the Raspberry Pi.
 
 
-### 2. Manufacture and assemble the PCB 
+### 2. Manufacture and assemble the PCB
 
 Open NSynth Super is built around a custom PCB with inputs for the hardware controls, audio and data I/O ports, and an OLED display for the UI. The PCB can be ordered fully assembled (this is most cost effective when ordering several boards), or be assembled by hand in a few hours. Further detail on the manufacture and assembly of the board can be found in the [PCB readme](/pcb_hardware) file.
 
@@ -172,7 +183,7 @@ $ sudo poweroff
 
 ### 5. Verify the installation
 
-Before assembling the shell and 'finishing' the instrument, it's important to check that everything is functioning correctly. To do this, plug in a MIDI device (like a keyboard), a pair of headphones or speakers, and power on the instrument. 
+Before assembling the shell and 'finishing' the instrument, it's important to check that everything is functioning correctly. To do this, plug in a MIDI device (like a keyboard), a pair of headphones or speakers, and power on the instrument.
 
 After a few seconds, you should see the grid interface appear on the OLED screen. Move your finger around the touch interface to test its responsiveness. Next, adjust the six controls at the base of the unit; the UI should update according to the control that you are adjusting. Finally, test the four instrument selection encoders, which will scroll through an instrument list on the screen.
 
@@ -193,7 +204,7 @@ With the case assembled, firmware installed, and the device tested, you're ready
 
 # Audio creation overview
 
-Sounds for Open NSynth Super are created using the neural synthesis technique implemented by Google Brain’s [Magenta](https://magenta.tensorflow.org/) team as part of their NSynth project. You can read more about Magenta and NSynth on their [project page](https://github.com/tensorflow/magenta/tree/master/magenta/models/nsynth). 
+Sounds for Open NSynth Super are created using the neural synthesis technique implemented by Google Brain’s [Magenta](https://magenta.tensorflow.org/) team as part of their NSynth project. You can read more about Magenta and NSynth on their [project page](https://github.com/tensorflow/magenta/tree/master/magenta/models/nsynth).
 
 Because generating audio requires a great deal of processing power, this repository includes a set of scripts that you can run on a server which will take any audio recordings of your choice and convert them into a format compatible with the instrument. This audio pipeline is built on top of the NSynth implementation available through [Magenta's GitHub page](https://github.com/tensorflow/magenta/tree/master/magenta/models/nsynth).
 
