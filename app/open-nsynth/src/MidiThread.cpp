@@ -81,21 +81,21 @@ bool MidiThread::setup(const std::string &device, int channel){
 void MidiThread::threadedFunction(){
 	auto read1 = [this]()->uint8_t{
 		uint8_t result;
-		while(true) {
-            if(!isThreadRunning()){
+		while(true){
+			if(!isThreadRunning()){
 				return 0xff;
-            }
-			
+			}
+
 			int readCount = read(deviceFd, &result, 1);
-            if (readCount != 1) {
-                continue;
-            }
+			if(readCount != 1){
+				continue;
+			}
 
 			// ignore system real time bytes
-            if (result == 0xFE || result == 0xFF || result == 0xF8 || result == 0xFA || result == 0xFB || result == 0xFC) {
-                continue;
-            }
-			
+			if(result >= 0xf8){
+				continue;
+			}
+
 			return result;
 		}
 	};
