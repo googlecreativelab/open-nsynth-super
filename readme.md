@@ -61,7 +61,7 @@ There are several distinct components to each Open NSynth Super unit: a custom P
 
 ##### Hardware & firmware
 
-The electronics are built around a Raspberry Pi 3 running Raspbian Linux (note that the new Raspberry Pi 3B+ is not yet tested with these instructions), and a custom PCB used to read the inputs and control the outputs. A microcontroller on the PCB manages the physical inputs: there are four rotary encoders on the four corners for instrument selection; six potentiometers below the interface to control the position, envelope, and volume settings; and a capacitive grid on the surface of the PCB (exposed through the top layer of the case) used to select the mixing point of the four instruments. 
+The electronics are built around a Raspberry Pi 3 running Raspbian Linux, and a custom PCB used to read the inputs and control the outputs. A microcontroller on the PCB manages the physical inputs: there are four rotary encoders on the four corners for instrument selection; six potentiometers below the interface to control the position, envelope, and volume settings; and a capacitive grid on the surface of the PCB (exposed through the top layer of the case) used to select the mixing point of the four instruments.
 
 More information on the electronics, hardware, and firmware can be found [here](/pcb_hardware), and [here](/firmware). A complete bill of materials for the case and electronics is available in this Excel [spreadsheet](https://storage.googleapis.com/open-nsynth-super/onss_bom.xlsx).
 

@@ -6,18 +6,18 @@ As part of the process of setting up a new system, you will also have to install
 
 You will need:
 
-- A Raspberry Pi 3 ***Note that the new Raspberry Pi 3B+ is not yet tested with these instructions***
+- A Raspberry Pi 3
 - An assembled Open NSynth Super mainboard PCB
 - An SD card with at least 8GB capacity
 - A wireless or wired network connection
-- Raspbian Jessie Lite ([version 2017-07-05](http://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2017-07-05/))
+- Raspbian Stretch Lite ([version 2018-06-27](http://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2018-06-29/))
 - A Mac, Linux or Windows PC with SD writing capability (for example using [Etcher](http://etcher.io))
 
 ### 1. Create the SD card (cross-platform)
 
 The easiest way to create the SD card is to use the Etcher software. Download the [application](http://etcher.io) from the Etcher website and set up on your machine (the process for doing this will differ across platforms).
 
-You will need to download the correct Raspbian Jessie Lite image from the [Raspbian archive](http://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2017-07-05/). Open NSynth Super requires the release dated 2017-07-05 to maintain openFrameworks compatibility.
+You will need to download the correct Raspbian Stretch Lite image from the [Raspbian archive](http://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2018-06-29/). Open NSynth Super may work with other releases too.
 
 It should take about 5 minutes to flash the image, depending on the speed of your card reader and card.
 
@@ -25,7 +25,7 @@ It should take about 5 minutes to flash the image, depending on the speed of you
 
 ##### Mac OS
 
-1. Download Raspbian Jessie Lite from the [Raspbian archive](http://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2017-07-05/). Open NSynth Super requires the release dated 2017-07-05 to maintain openFrameworks compatibility.
+1. Download Raspbian Stretch Lite from the [Raspbian archive](http://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2018-06-29/).
 
 2. Insert the SD card and use Disk Utility to check your system for its path:
 
@@ -48,7 +48,7 @@ It should take about 5 minutes to flash the image, depending on the speed of you
 4. Start the copying process to flash the image:
 
 	```
-	$ sudo dd if=2017-07-05-raspbian-jessie-lite.img of=<DISK_NAME> bs=64m
+	$ sudo dd if=2018-06-27-raspbian-stretch-lite.img of=<DISK_NAME> bs=64m
 	```
 
 5. Upon completion, eject the disk and insert into the Raspberry Pi:
@@ -60,7 +60,7 @@ It should take about 5 minutes to flash the image, depending on the speed of you
 
 ##### Linux
 
-1. Download Raspbian Jessie Lite from the [Raspbian archive](http://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2017-07-05/). Open NSynth Super requires the release dated 2017-07-05 to maintain openFrameworks compatibility.
+1. Download Raspbian Stretch Lite from the [Raspbian archive](http://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2018-06-29/).
 
 2. Insert the SD card and use check your system for its path (to ensure you choose the correct path, list the contents of `/dev/sd*` before and after inserting the card):
 
@@ -78,7 +78,7 @@ It should take about 5 minutes to flash the image, depending on the speed of you
 4. Start the copy process to flash the image:
 
 	```
-	$ sudo dd if=2017-07-05-raspbian-jessie-lite.img of=/dev/<DISK_NAME> bs=64M
+	$ sudo dd if=2018-06-27-raspbian-stretch-lite.img of=/dev/<DISK_NAME> bs=64M
 	```
 
 5. Upon completion, unmount the disk and insert into the Raspberry Pi:
