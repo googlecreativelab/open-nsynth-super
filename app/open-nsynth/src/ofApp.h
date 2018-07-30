@@ -131,7 +131,7 @@ class ofApp : public ofBaseApp{
 		// The configured sound output.
 		ofSoundStream soundStream;
 		// A lock to guard multithreaded use of synth.
-		Poco::FastMutex synthMutex;
+		std::mutex synthMutex;
 		// The NSyth instance.
 		NSynth synth;
 		// True if NSyth has a valid pad loaded.

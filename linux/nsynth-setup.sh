@@ -65,17 +65,17 @@ install_deps() {
     apt-get update
     apt-get install -y i2c-tools python-smbus gdb-arm-none-eabi gcc-arm-none-eabi \
         git autoconf libtool make pkg-config build-essential \
-        libcairo-dev gstreamer0.10-dev gstreamer0.10-x \
-        gstreamer0.10-plugins-base-apps gstreamer0.10-alsa \
-        libudev-dev libsndfile-dev libopenal-dev libssl-dev \
-        gstreamer0.10-plugins-good gstreamer0.10-plugins-bad \
-        gstreamer-plugins-base0.10-dev freeglut3-dev libasound2-dev \
-        libxmu-dev libxxf86vm-dev libgl1-mesa-dev libglu1-mesa-dev \
-        libraw1394-dev libudev-dev libdrm-dev libglew-dev libopenal-dev \
-        libsndfile-dev libfreeimage-dev libcairo2-dev libfreetype6-dev \
-        libssl-dev libpulse-dev libusb-1.0-0-dev libopencv-dev \
-        libegl1-mesa-dev libgles1-mesa-dev libgles2-mesa-dev libassimp-dev \
-        librtaudio-dev libboost-filesystem-dev
+        freeglut3-dev libasound2-dev libxmu-dev libxxf86vm-dev g++ libgl1-mesa-dev \
+        libglu1-mesa-dev libraw1394-dev libudev-dev libdrm-dev libglew-dev \
+        libopenal-dev libsndfile-dev libfreeimage-dev libcairo2-dev \
+        libfreetype6-dev libssl-dev libpulse-dev libusb-1.0-0-dev libgtk-3-dev \
+        libopencv-dev libegl1-mesa-dev libgles1-mesa-dev libgles2-mesa-dev \
+        libassimp-dev librtaudio-dev libboost-filesystem-dev libglfw3-dev \
+        liburiparser-dev libcurl4-openssl-dev libpugixml-dev libgstreamer1.0-dev \
+        libgstreamer-plugins-base1.0-dev gstreamer1.0-libav \
+        gstreamer1.0-pulseaudio gstreamer1.0-x gstreamer1.0-plugins-bad \
+        gstreamer1.0-alsa gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
+        gstreamer1.0-omx libpoco-dev
 }
 
 
@@ -106,13 +106,12 @@ EOF
 setup_openframeworks() {
     if ! [ -e /home/pi/opt/of ]
     then
-        echo "Fetching openFrameworks"
+        echo "Cloning openFrameworks"
         mkdir -p /home/pi/opt
         (
             cd /home/pi/opt
-            curl -k https://openframeworks.cc/versions/v0.9.8/of_v0.9.8_linuxarmv6l_release.tar.gz | tar -xzf -
-            mv of_v0.9.8_linuxarmv6l_release of
-            #sudo of/scripts/linux/debian/install_dependencies.sh
+            git clone --branch 0.10.0 --depth 1 https://github.com/openframeworks/openFrameworks.git of
+            ./of/scripts/linux/download_libs.sh
         )
     fi
 }
@@ -125,9 +124,8 @@ setup_openocd() {
         mkdir -p /home/pi/tmp/setup
         (
             cd /home/pi/tmp/setup
-            git clone git://git.code.sf.net/p/openocd/code openocd
+            git clone --branch v0.10.0 --depth 1 git://git.code.sf.net/p/openocd/code openocd
             cd openocd
-            git checkout v0.10.0
             ./bootstrap
             ./configure --prefix=/usr --enable-sysfsgpio --enable-bcm2835gpio
             make -j4
