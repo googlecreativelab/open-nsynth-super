@@ -110,7 +110,7 @@ setup_openframeworks() {
         mkdir -p /home/pi/opt
         (
             cd /home/pi/opt
-            curl http://openframeworks.cc/versions/v0.9.8/of_v0.9.8_linuxarmv6l_release.tar.gz | tar -xzf -
+            curl -k https://openframeworks.cc/versions/v0.9.8/of_v0.9.8_linuxarmv6l_release.tar.gz | tar -xzf -
             mv of_v0.9.8_linuxarmv6l_release of
             #sudo of/scripts/linux/debian/install_dependencies.sh
         )
