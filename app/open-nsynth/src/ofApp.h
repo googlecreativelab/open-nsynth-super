@@ -134,8 +134,12 @@ class ofApp : public ofBaseApp{
 		std::mutex synthMutex;
 		// The NSyth instance.
 		NSynth synth;
-		// True if NSyth has a valid pad loaded.
+		// True if NSynth has a valid pad loaded.
 		bool synthLoaded = false;
+
+		// Keyboard handling
+		static constexpr const char *keyNotes = "qwertyuiop";
+		bool keyDown[10] = {false};
 
 		// A handler for incoming Open Sound Control messages.
 		ofxOscReceiver oscIn;

@@ -7,7 +7,7 @@
 #pragma once
 
 class ADSR {
-private:
+protected:
     
     struct adr {
         float attack = 0;

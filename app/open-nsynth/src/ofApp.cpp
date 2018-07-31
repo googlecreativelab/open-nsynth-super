@@ -127,6 +127,9 @@ void ofApp::setupSynth(){
 				36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 84}),
 			getDefault(config["length"], 60000),
 			getDefault(config["sampleRate"], 16000));
+	synth.looping = getDefault(config["looping"], synth.looping);
+	synth.loopStart = getDefault(config["loopStart"], synth.loopStart);
+	synth.loopEnd = getDefault(config["loopEnd"], synth.loopEnd);
 }
 
 
@@ -151,13 +154,9 @@ void ofApp::update(){
 	while(oscIn.getNextMessage(msg)){
         string addr = msg.getAddress();
 		if(addr == "/on"){
-			synthMutex.lock();
-			synth.on(msg.getArgAsInt(0), msg.getArgAsFloat(1));
-			synthMutex.unlock();
+			synth.addNoteOn(msg.getArgAsInt(0), msg.getArgAsFloat(1));
 		}else if(addr == "/off"){
-			synthMutex.lock();
-			synth.off(msg.getArgAsInt(0));
-			synthMutex.unlock();
+			synth.addNoteOff(msg.getArgAsInt(0));
 		}
 	}
 }
@@ -364,20 +363,35 @@ void ofApp::keyPressed(int key){
 		updateRotary(idx, 1);
 	}else if((idx = findChr("zxcv", key)) >= 0){
 		updateRotary(idx, -1);
-	}else if((idx = findChr("qwertyuiop", key)) >= 0){
-		synthMutex.lock();
-		synth.on(idx);
-		synthMutex.unlock();
+	}else if((idx = findChr(keyNotes, key)) >= 0){
+		if (!keyDown[idx]) {
+			keyDown[idx] = true;
+			synth.addNoteOn(idx, 1.0);
+		}
+	}else if(findChr("[]'#", key) >= 0){
+		if(key == '['){
+			synth.loopStart = std::max(0.f, synth.loopStart - 0.01f);
+		}else if(key == ']'){
+			synth.loopStart = std::min(1.f, synth.loopStart + 0.01f);
+		}else if(key == '\''){
+			synth.loopEnd = std::max(0.f, synth.loopEnd - 0.01f);
+		}else if(key == '#'){
+			synth.loopEnd = std::min(1.f, synth.loopEnd + 0.01f);
+		}
+
+		if (synth.loopStart > synth.loopEnd) {
+			std::swap(synth.loopStart, synth.loopEnd);
+		}
+		printf("start: %.03f    end: %.03f\n", synth.loopStart, synth.loopEnd);
 	}
 }
 
 
 void ofApp::keyReleased(int key){
 	int idx;
-	if((idx = findChr("qwertyuiop", key)) >= 0){
-		synthMutex.lock();
-		synth.off(idx);
-		synthMutex.unlock();
+	if((idx = findChr(keyNotes, key)) >= 0){
+		keyDown[idx] = false;
+		synth.addNoteOff(idx);
 	}
 }
 

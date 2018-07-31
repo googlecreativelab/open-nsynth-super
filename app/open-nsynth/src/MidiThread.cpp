@@ -127,9 +127,7 @@ void MidiThread::threadedFunction(){
 			}
 
 			if((header & 0x0f) == channel){
-				synthMutex.lock();
-				synth.on(note, static_cast<float>(velocity) / 127.0f);
-				synthMutex.unlock();
+				synth.addNoteOn(note, static_cast<float>(velocity) / 127.0f);
 			}
 
 			// Start on the next message.
@@ -159,9 +157,7 @@ void MidiThread::threadedFunction(){
 			}
 
 			if((header & 0x0f) == channel){
-				synthMutex.lock();
-				synth.off(note);
-				synthMutex.unlock();
+				synth.addNoteOff(note);
 			}
 
 			// Start on the next message.

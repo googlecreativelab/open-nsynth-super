@@ -5,7 +5,10 @@
         "resolution": 9,
         "pitches": [24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 84],
         "length": 60000,
-        "sampleRate": 16000
+        "sampleRate": 16000,
+        "looping": true,
+        "loopStart": 0.2,
+        "loopEnd": 0.41
     },
     "corners": [
         {

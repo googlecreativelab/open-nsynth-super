@@ -6,6 +6,8 @@
 */
 
 #pragma once
+#include <deque>
+#include <mutex>
 #include <vector>
 #include <utility>
 
@@ -28,7 +30,10 @@ private:
     uint64_t previous_time = 0;
     float average_time_available = 0;
     float average_time_used = 0;
-    
+    std::mutex commandQueueMutex;
+    // queue of note commands [note,vel] - vel==0 is note off
+    std::deque<std::pair<int,float>> noteCommandQueue;
+
 protected:
 #ifdef USE_ASYNC
     BinaryDataAsync<int16_t> sources;
@@ -36,18 +41,32 @@ protected:
     BinaryDataSync<int16_t> sources;
 #endif
     std::vector<std::pair<int, float>> lookup;
-    
+
     static std::vector<std::pair<int, float>> buildMultisampleLookup(const std::vector<int>& centers);
-    
+    void on(int note, float volume=1);
+
+    void processNoteQueue();
+    float lastReleaseTime = 0.001;
+
 public:
+    void addNoteOn(int note, float vel=1.0f);
+    void addNoteOff(int note);
+
     void setup(int rows, int cols, int samplerate);
     void load(std::string filename);
     size_t rows() const;
     size_t cols() const;
-    void on(int note, float volume=1);
     void set_position(float position);
     void set_volume(float volume);
     void audio_loop(std::vector<float>& audio, unsigned int samplerate);
     float get_performance() const;
     float signalAmplitude = 0;
+
+    float loopStart = 0.2f;
+    float loopEnd = 0.41f;
+    bool looping = true;
+    int crossfadeDuration = 4000;
+
+    size_t softMaxVoices = 32;
+    size_t hardMaxVoices = 40;
 };
