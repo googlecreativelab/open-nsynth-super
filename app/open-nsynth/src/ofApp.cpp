@@ -33,6 +33,17 @@ std::string getDefault(ofJson node, const char *defaultValue){
 }
 
 
+template<typename T>
+constexpr const T& clamp(const T& v, const T& lo, const T& hi){
+	return std::min(std::max(v, lo), hi);
+}
+
+
+constexpr std::array<int, 4> ofApp::PATCH_BCM_PINS;
+std::vector<int> ofApp::patchKeys = {
+	OF_KEY_F1, OF_KEY_F2, OF_KEY_F3, OF_KEY_F4};
+
+
 ofApp::ofApp() : ofBaseApp(), midiThread(synthMutex, synth){
 }
 
@@ -43,7 +54,12 @@ void ofApp::setup(){
 		settings = ofLoadJson("settings.json");
 	}
 
+	patchScreen.onStateChange = [this](PatchScreen::State state){
+		handlePatchState(state);
+	};
+
 	setupCorners();
+	setupHardwareInputs();
 	setupSound();
 	setupSynth();
 	loadPad();
@@ -57,8 +73,15 @@ void ofApp::setup(){
 	}
 	setScreen(&particleScreen);
 
+	patches.filename = getDefault(
+			settings["patchFile"], "bin/data/patches.json");
+	if(!patches.load()){
+		ofLog(OF_LOG_WARNING) << "Failed to patches from " << patches.filename;
+	}
+
 	i2c = open("/dev/i2c-1", O_RDWR);
-	oledScreenDriver.setup(i2c, OLED_I2C_ADDR, OLED_BCM_RESET_PIN);
+	gpio.reset(OLED_BCM_RESET_PIN, 1000, 1000);
+	oledScreenDriver.setup(i2c, OLED_I2C_ADDR);
 
 	inputsRead = false;
 	readInputs();
@@ -89,6 +112,15 @@ void ofApp::setupCorners(){
 		}
 		if(++idx >= 4){
 			break;
+		}
+	}
+}
+
+
+void ofApp::setupHardwareInputs(){
+	if(gpio){
+		for(auto pin : PATCH_BCM_PINS){
+			gpio.setInput(pin, Gpio::PULL_UP);
 		}
 	}
 }
@@ -137,12 +169,12 @@ void ofApp::update(){
 	readInputs();
 
 	synthMutex.lock();
-	synth.set_position(analogInputs[0].getNormalized());
-	synth.set_attack(0.0001 + analogInputs[1].getNormalized());
-	synth.set_decay(analogInputs[2].getNormalized());
-	synth.set_sustain(analogInputs[3].getNormalized());
-	synth.set_release(analogInputs[4].getNormalized());
-	synth.set_volume(analogInputs[5].getNormalized());
+	synth.set_position(analogInputs[POSITION].getNormalized());
+	synth.set_attack(0.0001 + analogInputs[ATTACK].getNormalized());
+	synth.set_decay(analogInputs[DECAY].getNormalized());
+	synth.set_sustain(analogInputs[SUSTAIN].getNormalized());
+	synth.set_release(analogInputs[RELEASE].getNormalized());
+	synth.set_volume(analogInputs[VOLUME].getNormalized());
 	synth.set_interpolation_position(
 			static_cast<float>(gridSelection[0]) / (GRID_SIZE - 1),
 			static_cast<float>(gridSelection[1]) / (GRID_SIZE - 1));
@@ -157,6 +189,13 @@ void ofApp::update(){
 			synth.addNoteOn(msg.getArgAsInt(0), msg.getArgAsFloat(1));
 		}else if(addr == "/off"){
 			synth.addNoteOff(msg.getArgAsInt(0));
+		}else if(addr == "/volume"){
+			int val = static_cast<int>(msg.getArgAsFloat(0)*255.0f);
+			updateAnalogInput(VOLUME, clamp(val, 0, 255), true);
+		}else if(addr == "/patch/load"){
+			loadPatch(msg.getArgAsInt(0));
+		}else if(addr == "/patch/save"){
+			savePatch(msg.getArgAsInt(0));
 		}
 	}
 }
@@ -196,12 +235,12 @@ void ofApp::readInputs(){
 
 	if(!inputsRead){
 		// Set the initial values of the analog inputs.
-		for(int i=0; i<6; ++i){
+		for(int i=0; i<ANALOG_INPUT_MAX; ++i){
 			analogInputs[i].init(message.potentiometers[i]);
 		}
 	}else{
 		// Update the analog inputs.
-		for(int i=0; i<6; ++i){
+		for(int i=0; i<ANALOG_INPUT_MAX; ++i){
 			updateAnalogInput(i, message.potentiometers[i], false);
 		}
 
@@ -214,6 +253,13 @@ void ofApp::readInputs(){
 
 	updateGridSelection({message.touch[0], message.touch[1]});
 
+	if(gpio){
+		int idx = 0;
+		for(auto pin : PATCH_BCM_PINS){
+			updatePatchInput(idx++, !gpio.read(pin));
+		}
+	}
+
 	inputsRead = true;
 	lastInputsMessage = message;
 }
@@ -225,6 +271,8 @@ void ofApp::draw(){
 	particleScreen.updateParticles(
 			{(float)gridSelection[0], (float)gridSelection[1]},
 			elapsed);
+
+	patchScreen.update(elapsed);
 
 	// Render into an fbo.
 	fbo.begin();
@@ -274,51 +322,86 @@ void ofApp::updateRotary(int idx, int amount){
 }
 
 
-void ofApp::updateAnalogInput(int idx, uint8_t value, bool force){
-	bool changed = analogInputs[idx].update(value, true);
+void ofApp::updateAnalogInput(int idx, uint8_t value, bool software){
+	bool changed = analogInputs[idx].update(value, software, true);
 	float normalized = analogInputs[idx].getNormalized();
 
 	if(idx == 0){
 		positionScreen.position = normalized;
-		if(changed || force){
+		if(changed){
 			setScreen(&positionScreen);
 		}
 	}else if(idx == 1){
 		envelopeScreen.attack = normalized;
-		if(changed || force){
+		if(changed){
 			envelopeScreen.stage = 0;
 			setScreen(&envelopeScreen);
 		}
 	}else if(idx == 2){
 		envelopeScreen.decay = normalized;
-		if(changed || force){
+		if(changed){
 			envelopeScreen.stage = 1;
 			setScreen(&envelopeScreen);
 		}
 	}else if(idx == 3){
 		envelopeScreen.sustain = normalized;
-		if(changed || force){
+		if(changed){
 			envelopeScreen.stage = 2;
 			setScreen(&envelopeScreen);
 		}
 	}else if(idx == 4){
 		envelopeScreen.release = normalized;
-		if(changed || force){
+		if(changed){
 			envelopeScreen.stage = 3;
 			setScreen(&envelopeScreen);
 		}
 	}else if(idx == 5){
 		volumeScreen.volume = normalized;
-		if(changed || force){
+		if(changed){
 			setScreen(&volumeScreen);
 		}
 	}
 }
 
 
+void ofApp::updatePatchInput(int idx, bool pressed){
+	if(idx >= 0 && idx < 4){
+		patchScreen.handleInput(idx, pressed);
+	}
+}
+
+
+void ofApp::handlePatchState(PatchScreen::State state){
+	switch(state){
+		case PatchScreen::State::IDLE:
+			setScreen(&particleScreen);
+			break;
+		case PatchScreen::State::INTERACTION_STARTED:
+			setScreen(&patchScreen);
+			break;
+		case PatchScreen::State::PATCH_LOADED:
+			loadPatch(patchScreen.getPatchIndex());
+			break;
+		case PatchScreen::State::PATCH_SAVE_CANCELLED:
+			setScreen(&particleScreen);
+			break;
+		case PatchScreen::State::PATCH_SAVED:
+			savePatch(patchScreen.getPatchIndex());
+			break;
+		default:
+			break;
+	}
+}
+
+
 void ofApp::setScreen(BaseScreen *screen){
 	currentScreen = screen;
-	if(screen == &particleScreen){
+
+	if(screen != &patchScreen){
+		patchScreen.cancelInput();
+	}
+
+	if(screen == &particleScreen || screen == &patchScreen){
 		currentScreenTimeout = 0.0;
 	}else{
 		currentScreenTimeout = SCREEN_TIMEOUT;
@@ -327,25 +410,130 @@ void ofApp::setScreen(BaseScreen *screen){
 
 
 void ofApp::loadPad(){
-	vector<string> parts;
+	std::vector<std::string> parts;
 	for(auto& instrumentScreen : instrumentScreens){
 		parts.push_back(instrumentScreen.getCurrent().name);
 	}
-	string padBasename = ofJoinString(parts, "_");
+	std::string padBasename = ofJoinString(parts, "_");
 	auto dataDirectory = getDefault(settings["nsynth"]["dataDirectory"], "");
-	string padFilename = ofFilePath::join(dataDirectory, padBasename);
+	std::string padFilename = ofFilePath::join(dataDirectory, padBasename);
+	std::string fullpath = ofToDataPath(padFilename);
 	synthMutex.lock();
-	synthLoaded = synth.load(ofToDataPath(padFilename));
+	synthLoaded = synth.load(fullpath);
 	synthMutex.unlock();
+}
+
+
+bool ofApp::loadPatch(size_t patchIdx){
+	if(patchIdx >= patches.size()){
+		return false;
+	}
+
+	auto setAnalog = [this](size_t idx, float normValue){
+		uint8_t value = static_cast<uint8_t>(round(normValue * 0xff));
+		analogInputs[idx].update(value, true);
+	};
+
+	auto getInstrumentIndex = [](
+			std::vector<InstrumentScreen::Instrument> &insts,
+			std::string name)->int{
+		int idx = 0;
+		for(auto& inst : insts){
+			if(inst.name == name){
+				return idx;
+			}
+			++idx;
+		}
+		return -1;
+	};
+
+	auto& patch = patches[patchIdx];
+
+	// Find the instruments first, if this fails change nothing.
+	int cornerIndexes[4];
+	for(size_t corner=0; corner<4; ++corner){
+		int idx = getInstrumentIndex(
+				instrumentScreens[corner].instruments,
+				patch.instruments[corner]);
+		if(idx==-1){
+			ofLog(OF_LOG_WARNING) << "Failed to load patch " << (patchIdx + 1)
+				<< " as corner " << corner << " instrument '"
+				<< patch.instruments[corner] << "' not found";
+			return false;
+		}
+		cornerIndexes[corner] = idx;
+	}
+
+	setAnalog(POSITION, patch.position);
+	setAnalog(ATTACK, patch.attack);
+	setAnalog(DECAY, patch.decay);
+	setAnalog(SUSTAIN, patch.sustain);
+	setAnalog(RELEASE, patch.release);
+
+	bool changed = false;
+	for(size_t corner=0; corner<4; ++corner){
+		int idx = cornerIndexes[corner];
+		if(idx!=instrumentScreens[corner].idx){
+			changed = true;
+			instrumentScreens[corner].idx = idx;
+			particleScreen.setInstrument(
+					corner, instrumentScreens[corner].getCurrent().abbr);
+		}
+	}
+	if(changed){
+		loadPad();
+	}
+
+	for(size_t idx=0; idx<2; ++idx){
+		gridSelection[idx] = clamp(
+				static_cast<int>(patch.grid[idx] * (GRID_SIZE-1)),
+				0, GRID_SIZE-1);
+	}
+
+	return true;
+}
+
+
+bool ofApp::savePatch(size_t patchIdx){
+	if(patchIdx >= patches.size()){
+		return false;
+	}
+
+	auto& patch = patches[patchIdx];
+	patch.position = analogInputs[POSITION].getNormalized();
+	patch.attack = analogInputs[ATTACK].getNormalized();
+	patch.decay = analogInputs[DECAY].getNormalized();
+	patch.sustain = analogInputs[SUSTAIN].getNormalized();
+	patch.release = analogInputs[RELEASE].getNormalized();
+	for(size_t idx=0; idx<4; ++idx){
+		patch.instruments[idx] = instrumentScreens[idx].getCurrent().name;
+	}
+	patch.grid[0] = float(gridSelection[0]) / float(GRID_SIZE-1);
+	patch.grid[1] = float(gridSelection[1]) / float(GRID_SIZE-1);
+
+	return patches.save();
 }
 
 
 // Returns the index of a character in a string, or -1 if it is not found.
 static int findChr(const char *str, int chr){
-	for (int idx=0; str[idx]; ++idx) {
-		if (str[idx] == chr) {
+	for(int idx=0; str[idx]; ++idx){
+		if(str[idx] == chr){
 			return idx;
 		}
+	}
+	return -1;
+};
+
+
+// Returns the index of a key in a list of keys, or -1 if it is not found.
+static int findKey(const std::vector<int> &keys, int key){
+	int idx = 0;
+	for(auto needle : keys){
+		if(needle == key){
+			return idx;
+		}
+		++idx;
 	}
 	return -1;
 };
@@ -354,10 +542,10 @@ static int findChr(const char *str, int chr){
 void ofApp::keyPressed(int key){
 	int idx;
 	if((idx = findChr("ghjkl;", key)) >= 0){
-		int current = analogInputs[idx].readValue;
+		int current = analogInputs[idx].displayedValue;
 		updateAnalogInput(idx, std::min(current + 5, 255), true);
 	}else if((idx = findChr("bnm,./", key)) >= 0){
-		int current = analogInputs[idx].readValue;
+		int current = analogInputs[idx].displayedValue;
 		updateAnalogInput(idx, std::max(current - 5, 0), true);
 	}else if((idx = findChr("asdf", key)) >= 0){
 		updateRotary(idx, 1);
@@ -383,6 +571,8 @@ void ofApp::keyPressed(int key){
 			std::swap(synth.loopStart, synth.loopEnd);
 		}
 		printf("start: %.03f    end: %.03f\n", synth.loopStart, synth.loopEnd);
+	}else if((idx = findKey(patchKeys, key)) >= 0){
+		updatePatchInput(idx, true);
 	}
 }
 
@@ -392,6 +582,8 @@ void ofApp::keyReleased(int key){
 	if((idx = findChr(keyNotes, key)) >= 0){
 		keyDown[idx] = false;
 		synth.addNoteOff(idx);
+	}else if((idx = findKey(patchKeys, key)) >= 0){
+		updatePatchInput(idx, false);
 	}
 }
 

@@ -24,9 +24,9 @@ class AnalogInput{
 
 		// Updates the value.
 		// Returns true if the value has changed more than a threshold.
-		bool update(uint8_t value, bool currentScreen);
+		bool update(uint8_t value, bool software, bool currentScreen=false);
 
-		// Returns the value as a float in the range 0.0 - 1.0.
+		// Returns the displayedValue as a float in the range 0.0 - 1.0.
 		float getNormalized() const;
 
 		static constexpr int CURRENT_SCREEN_DELTA = 2;

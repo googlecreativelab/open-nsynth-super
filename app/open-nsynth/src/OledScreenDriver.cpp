@@ -20,7 +20,7 @@ limitations under the License.
 #include <unistd.h>
 
 
-bool OledScreenDriver::setup(int i2cFd_, uint8_t address_, int resetPin){
+bool OledScreenDriver::setup(int i2cFd_, uint8_t address_){
 	i2cFd = i2cFd_;
 	address = address_;
 
@@ -31,10 +31,7 @@ bool OledScreenDriver::setup(int i2cFd_, uint8_t address_, int resetPin){
 		return false;
 	}
 
-	// First use the reset pin to reset the screen.
-	reset(resetPin);
-
-	// Now send the screen setup commands.
+	// Send the screen setup commands.
 	static uint8_t setup0[] = {
 		0, 174, 213, 128, 168, 63, 211, 0, 64, 141, 20, 32,
 		0, 161, 200, 218, 18, 217, 241, 219, 64, 164, 166
@@ -109,63 +106,4 @@ void OledScreenDriver::draw(ofFbo &fbo){
 	if(write(i2cFd, flush, sizeof(flush)) != sizeof(flush)){
 		return;
 	}
-}
-
-
-void OledScreenDriver::reset(int resetPin){
-	constexpr int INPUT = 1;
-	constexpr int OUTPUT = 1;
-	constexpr int SET = 7;
-	constexpr int CLEAR = 10;
-	constexpr int MAP_SIZE = 0xb4;
-
-	if(resetPin < 0){
-		return;
-	}
-
-	// Mmap the GPIO device to access the pins.
-	int fd = open("/dev/gpiomem", O_RDWR | O_SYNC);
-	if(fd < 0){
-		return;
-	}
-
-	volatile uint32_t *gpioReg = (uint32_t *)mmap(
-			NULL, MAP_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0);
-
-	close(fd);
-
-	if(gpioReg == MAP_FAILED){
-		return;
-	}
-
-	// Sets the mode to either INPUT or OUTPUT.
-	auto setMode = [&](int mode){
-		int reg = resetPin / 10;
-		int shift = (resetPin % 10) * 3;
-
-		gpioReg[reg] = (gpioReg[reg] & ~(7<<shift)) | (mode<<shift);
-	};
-
-	// Sets the level to high (1) or low (0).
-	auto writeLevel = [&](int level){
-		int bank = resetPin >> 5;
-		int val = 1 << (resetPin & 0x1f);
-		if(level){
-			gpioReg[bank+SET] = val;
-		}else{
-			gpioReg[bank+CLEAR] = val;
-		}
-	};
-
-	// Drive the reset pin low for 1ms.
-	setMode(OUTPUT);
-	writeLevel(0);
-	usleep(1000);
-	writeLevel(1);
-
-	// Then change it back to an input and wait for the screen to initialise.
-	setMode(INPUT);
-	usleep(1000);
-
-	munmap(const_cast<uint32_t *>(gpioReg), MAP_SIZE);
 }

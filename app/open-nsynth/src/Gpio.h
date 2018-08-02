@@ -13,21 +13,33 @@ limitations under the License.
 
 #pragma once
 
-#include "ofMain.h"
-#include "Gpio.h"
+#include <cstddef>
+#include <stdint.h>
 
 
-// Drives the SSD1306 based screen over I2C.
-class OledScreenDriver{
+// Provides access to the GPIO pins on a Raspberry Pi
+class Gpio{
 	public:
-		// Sends the initial configuration to the screen.
-		bool setup(int i2cFd, uint8_t address);
-		// Draws a 128x64 frame buffer on the screen.
-		void draw(ofFbo &fbo);
+		enum Pull{
+			PULL_NONE=0,
+			PULL_DOWN,
+			PULL_UP
+		};
 
-	private:
-		// The file descriptor of the I2C device.
-		int i2cFd;
-		// The I2C address of the screen.
-		uint8_t address;
+		Gpio();
+		~Gpio();
+
+		operator bool() const;
+
+		bool setInput(int pin, Pull pull=PULL_NONE);
+		bool setOutput(int pin);
+
+		bool write(int pin, bool high);
+		bool read(int pin);
+
+		// Sends a reset signal by pulsing a pin low.
+		void reset(int pin, size_t uSecHold, size_t uSecDelay);
+
+	protected:
+		volatile uint32_t *gpioReg = nullptr;
 };

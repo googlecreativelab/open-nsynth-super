@@ -48,9 +48,9 @@ public:
     :source(source)
     ,rate(rate)
     ,playhead(offset)
-    ,offset(offset)
+    ,volume(volume)
     ,envelopeBeforeNoteOff(0)
-    ,volume(volume) {
+    ,offset(offset) {
 
     }
 

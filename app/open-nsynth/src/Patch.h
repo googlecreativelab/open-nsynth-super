@@ -13,21 +13,34 @@ limitations under the License.
 
 #pragma once
 
-#include "ofMain.h"
-#include "Gpio.h"
+#include <array>
+#include <string>
+#include <ofJson.h>
 
 
-// Drives the SSD1306 based screen over I2C.
-class OledScreenDriver{
+// Encapsulates the synth settings.
+class Patch{
 	public:
-		// Sends the initial configuration to the screen.
-		bool setup(int i2cFd, uint8_t address);
-		// Draws a 128x64 frame buffer on the screen.
-		void draw(ofFbo &fbo);
+		float position = 0.0f;
+		float attack = 1.0f;
+		float decay = 1.0f;
+		float sustain = 1.0f;
+		float release = 1.0f;
 
-	private:
-		// The file descriptor of the I2C device.
-		int i2cFd;
-		// The I2C address of the screen.
-		uint8_t address;
+		std::array<std::string, 4> instruments;
+
+		std::array<float, 2> grid = {{0.5f, 0.5f}};
+
+		ofJson toJson();
+		bool fromJson(const ofJson &node);
+};
+
+
+// Saves and loads patches to a JSON file.
+class Patches : public std::array<Patch, 4>{
+	public:
+		std::string filename;
+
+		bool load();
+		bool save();
 };

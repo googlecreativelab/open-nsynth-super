@@ -22,17 +22,21 @@ void AnalogInput::init(uint8_t value){
 }
 
 
-bool AnalogInput::update(uint8_t value, bool currentScreen){
-	int8_t delta = abs(static_cast<int8_t>(value - displayedValue));
+bool AnalogInput::update(uint8_t value, bool software, bool currentScreen){
 	bool changed;
 
-	if(currentScreen){
-		changed = delta > CURRENT_SCREEN_DELTA;
+	if(software){
+		changed = value != displayedValue;
 	}else{
-		changed = delta > HIDDEN_SCREEN_DELTA;
+		int delta = abs(int(value) - int(readValue));
+		if(currentScreen){
+			changed = delta > CURRENT_SCREEN_DELTA;
+		}else{
+			changed = delta > HIDDEN_SCREEN_DELTA;
+		}
+		readValue = value;
 	}
 
-	readValue = value;
 	if(changed){
 		displayedValue = value;
 	}
