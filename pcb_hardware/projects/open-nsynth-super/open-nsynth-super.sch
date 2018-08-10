@@ -111,23 +111,19 @@ NoConn ~ 5800 5250
 NoConn ~ 5900 5250
 NoConn ~ 6000 5250
 NoConn ~ 6100 5250
-NoConn ~ 4900 3250
 NoConn ~ 4900 3350
-NoConn ~ 4900 3650
 NoConn ~ 4900 3850
-NoConn ~ 4900 4250
 NoConn ~ 4900 4350
 NoConn ~ 4900 4650
 NoConn ~ 4900 4750
-NoConn ~ 6700 3450
-NoConn ~ 6700 3550
+NoConn ~ 4900 3250
+NoConn ~ 4900 3650
 NoConn ~ 6700 3750
 NoConn ~ 6700 3850
 NoConn ~ 6700 3950
 NoConn ~ 6700 4050
 NoConn ~ 6700 4150
 NoConn ~ 6700 4350
-NoConn ~ 6700 4450
 NoConn ~ 5900 2650
 NoConn ~ 6000 2650
 Text GLabel 5600 2450 1    39   Input ~ 0
@@ -372,4 +368,12 @@ Wire Wire Line
 	7650 3450 7650 3250
 Wire Wire Line
 	7650 3250 6700 3250
+Text GLabel 6700 3450 2    39   Output ~ 0
+rot0s
+Text GLabel 6700 3550 2    39   Output ~ 0
+rot1s
+Text GLabel 6700 4450 2    39   Output ~ 0
+rot2s
+Text GLabel 4900 4250 0    39   Output ~ 0
+rot3s
 $EndSCHEMATC

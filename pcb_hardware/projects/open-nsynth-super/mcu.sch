@@ -400,12 +400,12 @@ Connection ~ 9750 3750
 Connection ~ 9750 4150
 Connection ~ 9750 4550
 $Comp
-L Rotary_Encoder SW0
+L Rotary_Encoder_Switch SW0
 U 1 1 59FD2EA2
 P 1950 2800
 F 0 "SW0" H 1950 3060 50  0000 C CNN
 F 1 "Rotary_Encoder" H 1950 2540 50  0000 C CNN
-F 2 "Potentiometers:Potentiometer_Alps_RK09L_Sleve_Single_Horizontal" H 1850 2960 50  0001 C CNN
+F 2 "open-nsynth-super:PEC11R-S" H 1850 2960 50  0001 C CNN
 F 3 "" H 1950 3060 50  0001 C CNN
 	1    1950 2800
 	1    0    0    -1  
@@ -428,12 +428,12 @@ Wire Wire Line
 Text Label 1650 2900 2    39   ~ 0
 rot0b
 $Comp
-L Rotary_Encoder SW1
+L Rotary_Encoder_Switch SW1
 U 1 1 59FD480F
 P 1950 3500
 F 0 "SW1" H 1950 3760 50  0000 C CNN
 F 1 "Rotary_Encoder" H 1950 3240 50  0000 C CNN
-F 2 "Potentiometers:Potentiometer_Alps_RK09L_Sleve_Single_Horizontal" H 1850 3660 50  0001 C CNN
+F 2 "open-nsynth-super:PEC11R-S" H 1850 3660 50  0001 C CNN
 F 3 "" H 1950 3760 50  0001 C CNN
 	1    1950 3500
 	1    0    0    -1  
@@ -456,12 +456,12 @@ Wire Wire Line
 Text Label 1650 3600 2    39   ~ 0
 rot1b
 $Comp
-L Rotary_Encoder SW2
+L Rotary_Encoder_Switch SW2
 U 1 1 59FD4872
 P 1950 4200
 F 0 "SW2" H 1950 4460 50  0000 C CNN
 F 1 "Rotary_Encoder" H 1950 3940 50  0000 C CNN
-F 2 "Potentiometers:Potentiometer_Alps_RK09L_Sleve_Single_Horizontal" H 1850 4360 50  0001 C CNN
+F 2 "open-nsynth-super:PEC11R-S" H 1850 4360 50  0001 C CNN
 F 3 "" H 1950 4460 50  0001 C CNN
 	1    1950 4200
 	1    0    0    -1  
@@ -484,12 +484,12 @@ Wire Wire Line
 Text Label 1650 4300 2    39   ~ 0
 rot2b
 $Comp
-L Rotary_Encoder SW3
+L Rotary_Encoder_Switch SW3
 U 1 1 59FD4983
 P 1950 4900
 F 0 "SW3" H 1950 5160 50  0000 C CNN
 F 1 "Rotary_Encoder" H 1950 4640 50  0000 C CNN
-F 2 "Potentiometers:Potentiometer_Alps_RK09L_Sleve_Single_Horizontal" H 1850 5060 50  0001 C CNN
+F 2 "open-nsynth-super:PEC11R-S" H 1850 5060 50  0001 C CNN
 F 3 "" H 1950 5160 50  0001 C CNN
 	1    1950 4900
 	1    0    0    -1  
@@ -582,4 +582,64 @@ Connection ~ 5500 2100
 Wire Wire Line
 	5000 2300 5100 2300
 Connection ~ 5000 2100
+Wire Wire Line
+	2250 2700 2400 2700
+$Comp
+L GND #PWR?
+U 1 1 5B682297
+P 2400 2700
+F 0 "#PWR?" H 2400 2450 50  0001 C CNN
+F 1 "GND" H 2400 2550 50  0000 C CNN
+F 2 "" H 2400 2700 50  0000 C CNN
+F 3 "" H 2400 2700 50  0000 C CNN
+	1    2400 2700
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	2250 3400 2400 3400
+$Comp
+L GND #PWR?
+U 1 1 5B6823BB
+P 2400 3400
+F 0 "#PWR?" H 2400 3150 50  0001 C CNN
+F 1 "GND" H 2400 3250 50  0000 C CNN
+F 2 "" H 2400 3400 50  0000 C CNN
+F 3 "" H 2400 3400 50  0000 C CNN
+	1    2400 3400
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	2250 4100 2400 4100
+$Comp
+L GND #PWR?
+U 1 1 5B6824A4
+P 2400 4100
+F 0 "#PWR?" H 2400 3850 50  0001 C CNN
+F 1 "GND" H 2400 3950 50  0000 C CNN
+F 2 "" H 2400 4100 50  0000 C CNN
+F 3 "" H 2400 4100 50  0000 C CNN
+	1    2400 4100
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	2250 4800 2400 4800
+$Comp
+L GND #PWR?
+U 1 1 5B682555
+P 2400 4800
+F 0 "#PWR?" H 2400 4550 50  0001 C CNN
+F 1 "GND" H 2400 4650 50  0000 C CNN
+F 2 "" H 2400 4800 50  0000 C CNN
+F 3 "" H 2400 4800 50  0000 C CNN
+	1    2400 4800
+	0    -1   -1   0   
+$EndComp
+Text GLabel 2250 2900 2    39   Output ~ 0
+rot0s
+Text GLabel 2250 3600 2    39   Output ~ 0
+rot1s
+Text GLabel 2250 4300 2    39   Output ~ 0
+rot2s
+Text GLabel 2250 5000 2    39   Output ~ 0
+rot3s
 $EndSCHEMATC
