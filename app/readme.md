@@ -21,7 +21,7 @@ This document includes a guide for setting up the application, and additional de
 	$ scp -r open-nsynth-super-master pi@<DEVICE IP ADDRESS>:~
 	```
 
-2. These instructions assume that you have run the setup script from the [provisioning readme](../linux), which establishes the file structure used in this guide. 
+2. These instructions assume that you have run the setup script from the [provisioning readme](../linux), which establishes the file structure used in this guide.
 
 	On the Pi, navigate to the openFrameworks apps directory, and create a new directory for the ```open-nsynth``` application.
 
@@ -30,7 +30,7 @@ This document includes a guide for setting up the application, and additional de
 	$ mkdir open-nsynth
 	```
 
-3. Copy the contents of the app directory in this repository into the openFrameworks app directory you just created on the device. 
+3. Copy the contents of the app directory in this repository into the openFrameworks app directory you just created on the device.
 
 	```
 	$ cp -r /home/pi/open-nsynth-super-master/app/open-nsynth /home/pi/opt/of/apps/open-nsynth
@@ -66,6 +66,12 @@ Use `corners: instruments` to assign instruments to the corners of the interface
 
 ### MIDI channel
 The default MIDI device should be unchanged, while the channel can be safely altered with the `channel` property.
+
+### Loop points
+There is a default audio looping point defined in the settings file. By tweaking the values of `loopStart` and `loopEnd` you can change the point in the sample where the device will loop notes. Looping can be enabled and disabled with the `looping` boolean.
+
+### Patch Saving
+The patch saving feature in version 1.2.0 enables storing and recalling settings. The path for this file can be set with the `patchFile` property.
 
 # Deploying new sounds to the device
 Any sounds that you've created using the [audio pipeline](../audio) should be placed in a directory on the device. As this can be many gigabytes of audio data, it's recommended that you remove the SD card from the device and copy locally using a Linux computer. (You may need to wait for `fsck` to run when you reinsert the card to the device and boot up for the first time after copying.)

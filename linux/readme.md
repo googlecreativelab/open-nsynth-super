@@ -1,6 +1,6 @@
 # Open NSynth Super Device provisioning
 
-Use this guide to provision a new Open NSynth Super device from scratch. You may wish to skip this process and download one of the pre-made images: [64GB with all sample audio](https://storage.googleapis.com/open-nsynth-super/images/onss_1.1_full.img) or the [16GB 'lite' version](https://storage.googleapis.com/open-nsynth-super/images/onss_1.0_lite.img).
+Use this guide to provision a new Open NSynth Super device from scratch. You may wish to skip this process and download one of the pre-made images: [64GB with all sample audio](https://storage.googleapis.com/open-nsynth-super/images/onss_1.2.0_full.img.bz2) or the [16GB 'lite' version](https://storage.googleapis.com/open-nsynth-super/images/onss_1.2.0_lite.img.bz2).
 
 As part of the process of setting up a new system, you will also have to install the Open NSynth Super software application and firmware for the Open NSynth Super mainboard. There are separate documents in this repository to help with this, which are linked in this step-by-step guide. Creating a new OS image will take 1-2 hours (depending on your internet connection speed) however most of this time is spent downloading and compiling software; the 'hands-on' time required is considerably shorter.
 

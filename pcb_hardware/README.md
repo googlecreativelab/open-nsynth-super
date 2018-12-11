@@ -4,7 +4,7 @@
 
 This folder contains all of the source files for making your own Open NSynth Super PCB hardware: a KiCAD project for the PCB in `projects/open-nsynth-super`, rendered gerber files from the KiCAD project in `render/`, and exported schematics from the KiCAD project in `schematics/`.
 
-The PCB design includes a mix of SMT and through-hole components. It is possible to assemble individual boards by hand in a few hours, however for multiple boards it would be advisable to order multiple fully assembled (or at least SMT assembled) PCBs. If you wish to have the PCB manufactured, the files in `render/` should be all you need; additionally, a bill of materials is [available here](https://storage.googleapis.com/open-nsynth-super/onss_bom.xlsx).
+The PCB design includes a mix of SMT and through-hole components. It is possible to assemble individual boards by hand in a few hours, however for multiple boards it would be advisable to order multiple fully assembled (or at least SMT assembled) PCBs. If you wish to have the PCB manufactured, the files in `render/` should be all you need; additionally, a bill of materials is [available here](https://storage.googleapis.com/open-nsynth-super/onss_bom_1.2.0.xlsx).
 
 For reference, development PCBs were fabricated at the following specification:
 

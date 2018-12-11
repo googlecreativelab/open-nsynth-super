@@ -9,7 +9,7 @@ A fast computer is required to produce audio in a reasonable amount of time; how
 - Number of example pitches
 - Grid resolution
 
-As an example, a complex interpolation task (e.g. to produce the sounds in the [large example OS image](https://storage.googleapis.com/open-nsynth-super/images/onss_1.1_full.img)) included 4 different sounds in each corner of the instrument for a total of 256 different permutations, a 9x9 grid resolution, and 15 example pitches. (The source audio for generating these patches is available [here](https://storage.googleapis.com/open-nsynth-super/audio/onss_source_audio.tar.gz).)
+As an example, a complex interpolation task (e.g. to produce the sounds in the [large example OS image](https://storage.googleapis.com/open-nsynth-super/images/onss_1.2.0_full.img.bz2)) included 4 different sounds in each corner of the instrument for a total of 256 different permutations, a 9x9 grid resolution, and 15 example pitches. (The source audio for generating these patches is available [here](https://storage.googleapis.com/open-nsynth-super/audio/onss_source_audio.tar.gz).)
 
 For reference, a machine with 8 NVidia K80 GPUs, 128GB RAM and 8 CPU cores can generate the nearly 120,000 audio samples produced by this example in approximately 36 hours with a conservative batch size of 512.
 

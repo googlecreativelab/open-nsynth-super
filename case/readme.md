@@ -38,7 +38,7 @@ There are two 3D-printable dial designs for the Open NSynth Super's instrument s
 - 4 x 3.2mm self retaining spacers
 - Allen keys or screwdriver (depending on screw socket)
 
-A bill of materials for the whole project is [available here](https://storage.googleapis.com/open-nsynth-super/onss_bom.xlsx).
+A bill of materials for the whole project is [available here](https://storage.googleapis.com/open-nsynth-super/onss_bom_1.2.0.xlsx).
 
 # Building the case
 
