@@ -90,7 +90,7 @@ The example image file includes the following software features:
 You will need the following off-the-shelf items to complete this guide:
 
 - Micro SD card (16GB or 64GB)
-- Raspberry Pi 3 ***Note that the new 3B+ Raspberry Pi is not yet tested with these instructions***
+- Raspberry Pi 3B+
 - 5V 2A micro-USB power supply
 
 You will also need the following Open NSynth Super-specific items, which are detailed in the steps below:
