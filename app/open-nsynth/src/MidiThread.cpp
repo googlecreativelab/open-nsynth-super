@@ -101,9 +101,11 @@ void MidiThread::threadedFunction(){
 	};
 
 	uint8_t header = read1();
+    uint8_t running_status = 0;
 	while(isThreadRunning()){
 		if((header & 0xf0) == 0x90){
 			// Note on - this is a 3 byte message.
+            running_status = header;
 			uint8_t note = read1();
 			if(!isThreadRunning()){
 				break;
@@ -112,7 +114,7 @@ void MidiThread::threadedFunction(){
 				// The note is badly formed, discard the current header
 				// and continue;
 				header = note;
-				break;
+				continue;
 			}
 
 			uint8_t velocity = read1();
@@ -122,18 +124,22 @@ void MidiThread::threadedFunction(){
 			if(velocity & 0x80){
 				// The note is badly formed, discard the current header
 				// and continue;
-				header = note;
-				break;
+				header = velocity;
+				continue;
 			}
 
 			if((header & 0x0f) == channel){
-				synth.addNoteOn(note, static_cast<float>(velocity) / 127.0f);
+                if (velocity == 0) {
+                    // As per https://www.nyu.edu/classes/bello/FMT_files/9_MIDI_code.pdf
+                    // Note on, velocity zero is equivalent to note off.
+                    synth.addNoteOff(note);
+                } else {
+				    synth.addNoteOn(note, static_cast<float>(velocity) / 127.0f);
+                }
 			}
-
-			// Start on the next message.
-			header = read1();
 		}else if((header & 0xf0) == 0x80){
 			// Note off - this is a 3 byte message.
+            running_status = header;
 			uint8_t note = read1();
 			if(!isThreadRunning()){
 				break;
@@ -142,7 +148,7 @@ void MidiThread::threadedFunction(){
 				// The note is badly formed, discard the current header
 				// and continue;
 				header = note;
-				break;
+				continue;
 			}
 
 			uint8_t velocity = read1();
@@ -152,19 +158,66 @@ void MidiThread::threadedFunction(){
 			if(velocity & 0x80){
 				// The note is badly formed, discard the current header
 				// and continue;
-				header = note;
-				break;
+				header = velocity;
+				continue;
 			}
 
 			if((header & 0x0f) == channel){
 				synth.addNoteOff(note);
 			}
+		}else if ((header & 0x80) == 0) {
+            // See if we have a valid running status...
+            // see http://www.lim.di.unimi.it/IEEE/MIDI/SOT5.HTM#Running-
+            // for explanation of running status
+            if((running_status & 0xf0) == 0x90){
+                // Note on
+                uint8_t note = header;
+                header = running_status;
+                uint8_t velocity = read1();
+                if(!isThreadRunning()){
+                    break;
+                }
+                if(velocity & 0x80){
+                    // The note is badly formed, discard the current header
+                    // and continue;
+                    header = velocity;
+                    continue;
+                }
+                
+                if((header & 0x0f) == channel){
+                    if (velocity == 0) {
+                        // As per https://www.nyu.edu/classes/bello/FMT_files/9_MIDI_code.pdf
+                        // Note on, velocity zero is equivalent to note off.
+                        synth.addNoteOff(note);
+                    } else {
+                        synth.addNoteOn(note, static_cast<float>(velocity) / 127.0f);
+                    }
+                }
+            }else if((running_status & 0xf0) == 0x80){
+                // Note off
+                uint8_t note = header;
+                header = running_status;
+                uint8_t velocity = read1();
+                if(!isThreadRunning()){
+                    break;
+                }
+                if(velocity & 0x80){
+                    // The note is badly formed, discard the current header
+                    // and continue;
+                    header = velocity;
+                    continue;
+                }
+                
+                if((header & 0x0f) == channel){
+                    synth.addNoteOff(note);
+                }
+            }
+        } else {
+            // Discard the header as it is not understood.
+            running_status = 0;
+        }
 
-			// Start on the next message.
-			header = read1();
-		}else{
-			// Discard the header as it is not understood.
-			header = read1();
-		}
+        // Start on the next message.
+        header = read1();
 	}
 }
