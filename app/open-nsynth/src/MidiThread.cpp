@@ -130,7 +130,7 @@ void MidiThread::threadedFunction(){
 
 			if((header & 0x0f) == channel){
                 if (velocity == 0) {
-                    // As per https://www.nyu.edu/classes/bello/FMT_files/9_MIDI_code.pdf
+                    // As per Page 5 of MIDI 1.0 Detailed Specification 4.2
                     // Note on, velocity zero is equivalent to note off.
                     synth.addNoteOff(note);
                 } else {
@@ -167,7 +167,7 @@ void MidiThread::threadedFunction(){
 			}
 		}else if ((header & 0x80) == 0) {
             // See if we have a valid running status...
-            // see http://www.lim.di.unimi.it/IEEE/MIDI/SOT5.HTM#Running-
+            // see Page 5 of MIDI 1.0 Detailed Specification 4.2
             // for explanation of running status
             if((running_status & 0xf0) == 0x90){
                 // Note on
@@ -186,7 +186,7 @@ void MidiThread::threadedFunction(){
                 
                 if((header & 0x0f) == channel){
                     if (velocity == 0) {
-                        // As per https://www.nyu.edu/classes/bello/FMT_files/9_MIDI_code.pdf
+                        // As per Page 5 of MIDI 1.0 Detailed Specification 4.2
                         // Note on, velocity zero is equivalent to note off.
                         synth.addNoteOff(note);
                     } else {
