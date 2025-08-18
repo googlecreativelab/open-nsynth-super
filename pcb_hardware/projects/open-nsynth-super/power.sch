@@ -1,35 +1,5 @@
-EESchema Schematic File Version 2
-LIBS:power
-LIBS:device
-LIBS:transistors
-LIBS:conn
-LIBS:linear
-LIBS:regul
-LIBS:74xx
-LIBS:cmos4000
-LIBS:adc-dac
-LIBS:memory
-LIBS:xilinx
-LIBS:microcontrollers
-LIBS:dsp
-LIBS:microchip
-LIBS:analog_switches
-LIBS:motorola
-LIBS:texas
-LIBS:intel
-LIBS:audio
-LIBS:interface
-LIBS:digital-audio
-LIBS:philips
-LIBS:display
-LIBS:cypress
-LIBS:siliconi
-LIBS:opto
-LIBS:atmel
-LIBS:contrib
-LIBS:valves
-LIBS:custom
-EELAYER 25 0
+EESchema Schematic File Version 4
+EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
@@ -44,18 +14,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L TPS76333 U4
-U 1 1 59FBA046
-P 5450 2450
-F 0 "U4" H 5200 2650 50  0000 L CNN
-F 1 "TPS73133" H 5700 2650 50  0000 R CNN
-F 2 "open-nsynth-super:SOT-23-5" H 5700 2200 50  0001 C CIN
-F 3 "" H 5450 2450 50  0001 C CNN
-	1    5450 2450
-	1    0    0    -1  
-$EndComp
-$Comp
-L C C14
+L Device:C C14
 U 1 1 59FBA04E
 P 4550 2500
 F 0 "C14" H 4575 2600 50  0000 L CNN
@@ -66,7 +25,7 @@ F 3 "" H 4550 2500 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C15
+L Device:C C15
 U 1 1 59FBA056
 P 6000 2700
 F 0 "C15" H 6025 2800 50  0000 L CNN
@@ -77,7 +36,7 @@ F 3 "" H 6000 2700 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C16
+L Device:C C16
 U 1 1 59FBA05D
 P 6250 2700
 F 0 "C16" H 6275 2800 50  0000 L CNN
@@ -88,39 +47,17 @@ F 3 "" H 6250 2700 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3750 2350 5050 2350
-Connection ~ 4550 2350
-Wire Wire Line
-	4900 2350 4900 2550
-Wire Wire Line
-	4900 2550 5050 2550
-Connection ~ 4900 2350
-Wire Wire Line
-	5850 2550 6000 2550
-Wire Wire Line
 	6250 2550 6250 2350
 Wire Wire Line
-	4250 2850 6250 2850
+	4250 2850 4550 2850
 Wire Wire Line
 	5450 2850 5450 2750
-Connection ~ 6000 2850
 Wire Wire Line
 	4550 2850 4550 2650
 Connection ~ 5450 2850
 Connection ~ 4550 2850
 $Comp
-L TPS76333 U5
-U 1 1 59FBA073
-P 5450 3550
-F 0 "U5" H 5200 3750 50  0000 L CNN
-F 1 "TPS73133" H 5700 3750 50  0000 R CNN
-F 2 "open-nsynth-super:SOT-23-5" H 5700 3300 50  0001 C CIN
-F 3 "" H 5450 3550 50  0001 C CNN
-	1    5450 3550
-	1    0    0    -1  
-$EndComp
-$Comp
-L C C17
+L Device:C C17
 U 1 1 59FBA07B
 P 4550 3600
 F 0 "C17" H 4575 3700 50  0000 L CNN
@@ -131,7 +68,7 @@ F 3 "" H 4550 3600 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C18
+L Device:C C18
 U 1 1 59FBA083
 P 6000 3800
 F 0 "C18" H 6025 3900 50  0000 L CNN
@@ -142,7 +79,7 @@ F 3 "" H 6000 3800 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C19
+L Device:C C19
 U 1 1 59FBA08A
 P 6250 3800
 F 0 "C19" H 6275 3900 50  0000 L CNN
@@ -152,40 +89,20 @@ F 3 "" H 6250 3800 50  0001 C CNN
 	1    6250 3800
 	1    0    0    -1  
 $EndComp
-Connection ~ 4550 3450
-Wire Wire Line
-	4900 3450 4900 3650
-Wire Wire Line
-	4900 3650 5050 3650
-Connection ~ 4900 3450
-Wire Wire Line
-	5850 3650 6000 3650
 Wire Wire Line
 	6250 3650 6250 3450
 Wire Wire Line
-	5850 3450 6350 3450
+	5850 3450 6250 3450
 Wire Wire Line
-	4250 3950 6250 3950
+	4250 3950 4550 3950
 Wire Wire Line
 	5450 3950 5450 3850
-Connection ~ 6000 3950
 Wire Wire Line
 	4550 3950 4550 3750
 Connection ~ 5450 3950
 Connection ~ 4550 3950
 $Comp
-L TPS76333 U6
-U 1 1 59FBA0A0
-P 5450 4650
-F 0 "U6" H 5200 4850 50  0000 L CNN
-F 1 "TPS73133" H 5700 4850 50  0000 R CNN
-F 2 "open-nsynth-super:SOT-23-5" H 5700 4400 50  0001 C CIN
-F 3 "" H 5450 4650 50  0001 C CNN
-	1    5450 4650
-	1    0    0    -1  
-$EndComp
-$Comp
-L C C20
+L Device:C C20
 U 1 1 59FBA0A8
 P 4550 4700
 F 0 "C20" H 4575 4800 50  0000 L CNN
@@ -196,7 +113,7 @@ F 3 "" H 4550 4700 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C21
+L Device:C C21
 U 1 1 59FBA0B0
 P 6000 4900
 F 0 "C21" H 6025 5000 50  0000 L CNN
@@ -207,7 +124,7 @@ F 3 "" H 6000 4900 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C C22
+L Device:C C22
 U 1 1 59FBA0B7
 P 6250 4900
 F 0 "C22" H 6275 5000 50  0000 L CNN
@@ -217,23 +134,14 @@ F 3 "" H 6250 4900 50  0001 C CNN
 	1    6250 4900
 	1    0    0    -1  
 $EndComp
-Connection ~ 4550 4550
-Wire Wire Line
-	4900 4550 4900 4750
-Wire Wire Line
-	4900 4750 5050 4750
-Connection ~ 4900 4550
-Wire Wire Line
-	5850 4750 6000 4750
 Wire Wire Line
 	6250 4750 6250 4550
 Wire Wire Line
-	5850 4550 6350 4550
+	5850 4550 6250 4550
 Wire Wire Line
-	4250 5050 6250 5050
+	4250 5050 4550 5050
 Wire Wire Line
 	5450 5050 5450 4950
-Connection ~ 6000 5050
 Wire Wire Line
 	4550 5050 4550 4850
 Connection ~ 5450 5050
@@ -241,19 +149,17 @@ Connection ~ 4550 5050
 Connection ~ 6250 3450
 Connection ~ 6250 4550
 Wire Wire Line
-	5850 2350 6350 2350
+	5850 2350 6250 2350
 Connection ~ 6250 2350
 Text HLabel 3600 3450 0    39   Input ~ 0
 5V
 Wire Wire Line
-	3750 2350 3750 4550
+	3750 2350 3750 3450
 Wire Wire Line
-	3600 3450 5050 3450
+	3600 3450 3750 3450
 Connection ~ 3750 3450
-Wire Wire Line
-	3750 4550 5050 4550
 $Comp
-L GND #PWR07
+L power:GND #PWR07
 U 1 1 59FDCC3F
 P 4250 2850
 F 0 "#PWR07" H 4250 2600 50  0001 C CNN
@@ -264,7 +170,7 @@ F 3 "" H 4250 2850 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR08
+L power:GND #PWR08
 U 1 1 59FDCC8D
 P 4250 3950
 F 0 "#PWR08" H 4250 3700 50  0001 C CNN
@@ -275,7 +181,7 @@ F 3 "" H 4250 3950 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR09
+L power:GND #PWR09
 U 1 1 59FDCD40
 P 4250 5050
 F 0 "#PWR09" H 4250 4800 50  0001 C CNN
@@ -291,4 +197,114 @@ Text HLabel 6350 3450 2    39   Input ~ 0
 3.3V_C
 Text HLabel 6350 4550 2    39   Input ~ 0
 3.3V_D
+Wire Wire Line
+	4550 2850 5450 2850
+Wire Wire Line
+	4550 3950 5450 3950
+Wire Wire Line
+	4550 5050 5450 5050
+Wire Wire Line
+	6250 3450 6350 3450
+Wire Wire Line
+	6250 4550 6350 4550
+Wire Wire Line
+	6250 2350 6350 2350
+Wire Wire Line
+	3750 3450 3750 4550
+Wire Wire Line
+	5450 2850 6000 2850
+Wire Wire Line
+	5450 3950 6000 3950
+Wire Wire Line
+	5450 5050 6000 5050
+$Comp
+L Regulator_Linear:TPS73133DBV U6
+U 1 1 59FBA0A0
+P 5450 4650
+F 0 "U6" H 5450 5017 50  0000 C CNN
+F 1 "TPS73133" H 5450 4926 50  0000 C CNN
+F 2 "open-nsynth-super:SOT-23-5" H 5700 4400 50  0001 C CIN
+F 3 "" H 5450 4650 50  0001 C CNN
+	1    5450 4650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Regulator_Linear:TPS73133DBV U4
+U 1 1 59FBA046
+P 5450 2450
+F 0 "U4" H 5450 2817 50  0000 C CNN
+F 1 "TPS73133" H 5450 2726 50  0000 C CNN
+F 2 "open-nsynth-super:SOT-23-5" H 5700 2200 50  0001 C CIN
+F 3 "" H 5450 2450 50  0001 C CNN
+	1    5450 2450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3750 4550 4550 4550
+Wire Wire Line
+	3750 3450 4550 3450
+$Comp
+L Regulator_Linear:TPS73133DBV U5
+U 1 1 59FBA073
+P 5450 3550
+F 0 "U5" H 5450 3917 50  0000 C CNN
+F 1 "TPS73133" H 5450 3826 50  0000 C CNN
+F 2 "open-nsynth-super:SOT-23-5" H 5700 3300 50  0001 C CIN
+F 3 "" H 5450 3550 50  0001 C CNN
+	1    5450 3550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3750 2350 4550 2350
+Wire Wire Line
+	5050 2450 4950 2450
+Wire Wire Line
+	4950 2450 4950 2350
+Connection ~ 4950 2350
+Wire Wire Line
+	4950 2350 5050 2350
+Wire Wire Line
+	5850 2450 6000 2450
+Wire Wire Line
+	6000 2450 6000 2550
+Wire Wire Line
+	5850 3550 6000 3550
+Wire Wire Line
+	6000 3550 6000 3650
+Wire Wire Line
+	5050 3550 4950 3550
+Wire Wire Line
+	4950 3550 4950 3450
+Connection ~ 4950 3450
+Wire Wire Line
+	4950 3450 5050 3450
+Wire Wire Line
+	4950 4650 5050 4650
+Wire Wire Line
+	5850 4650 6000 4650
+Wire Wire Line
+	6000 4650 6000 4750
+Wire Wire Line
+	4950 4550 4950 4650
+Connection ~ 4950 4550
+Wire Wire Line
+	4950 4550 5050 4550
+Connection ~ 4550 2350
+Wire Wire Line
+	4550 2350 4950 2350
+Connection ~ 4550 3450
+Wire Wire Line
+	4550 3450 4950 3450
+Connection ~ 4550 4550
+Wire Wire Line
+	4550 4550 4950 4550
+Connection ~ 6000 2850
+Wire Wire Line
+	6000 2850 6250 2850
+Connection ~ 6000 3950
+Wire Wire Line
+	6000 3950 6250 3950
+Connection ~ 6000 5050
+Wire Wire Line
+	6000 5050 6250 5050
 $EndSCHEMATC
